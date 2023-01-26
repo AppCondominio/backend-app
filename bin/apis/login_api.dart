@@ -35,7 +35,7 @@ class LoginApi extends Api {
           var tokenVerificated =
               await _securityService.validateJWT(userEncontrado["jwtToken"]);
           if (tokenVerificated != null) {
-            return Response.ok("You made login!");
+            return Response.ok(jsonEncode(userEncontrado));
           }
         }
       }
