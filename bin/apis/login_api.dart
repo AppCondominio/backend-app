@@ -4,14 +4,16 @@ import 'package:shelf/shelf.dart';
 import 'package:shelf_router/shelf_router.dart';
 
 import '../infra/security/security_service.dart';
+import '../models/condo_model.dart';
 import '../models/user_model.dart';
 import '../services/generic_service.dart';
 import 'api.dart';
 
 class LoginApi extends Api {
   final SecurityService _securityService;
-  final GenericService<UserModel> _service;
-  LoginApi(this._securityService, this._service);
+  final GenericService<UserModel> _serviceUser;
+  final GenericService<CondoModel> _serviceCondo;
+  LoginApi(this._securityService, this._serviceUser, this._serviceCondo);
 
   @override
   Handler getHandler({List<Middleware>? middlewares, bool isSecurity = false}) {
@@ -19,15 +21,31 @@ class LoginApi extends Api {
     router.post('/login', (Request req) async {
       var res = await req.readAsString();
       var body = jsonDecode(res);
-      var document = body['documentNumber'];
-      var password = body['password'];
+      String document = body['documentNumber'];
+      String password = body['password'];
 
-      List<UserModel> listRegisters = _service.findAll();
-      List<Map> listRegistersMap =
-          listRegisters.map((e) => e.toJson()).toList();
+      List<CondoModel> listRegistersCondo = _serviceCondo.findAll();
+      List<Map> listRegistersCondoMap =
+          listRegistersCondo.map((e) => e.toJson()).toList();
+
+      List<UserModel> listRegistersUser = _serviceUser.findAll();
+      List<Map> listRegistersUserMap =
+          listRegistersUser.map((e) => e.toJson()).toList();
 
       if (res.isNotEmpty) {
-        var userEncontrado = listRegistersMap.firstWhere(
+
+        // Caso seja CNPJ
+        if (document.length == 14) {
+          var condoEncontrado = listRegistersCondoMap.firstWhere(
+              (e) => e['documentNumber'] == document,
+              orElse: () => {});
+          if (document == condoEncontrado["documentNumber"] &&
+              password == condoEncontrado["password"]) {
+            return Response.ok(jsonEncode(condoEncontrado));
+          }
+        }
+
+        var userEncontrado = listRegistersUserMap.firstWhere(
             (e) => e['documentNumber'] == document,
             orElse: () => {});
         if (document == userEncontrado["documentNumber"] &&

@@ -1,7 +1,8 @@
 import 'package:shelf/shelf.dart';
 
 import 'apis/login_api.dart';
-import 'apis/register_api.dart';
+import 'apis/register_condo_api.dart';
+import 'apis/register_user_api.dart';
 import 'infra/custom_server.dart';
 import 'package:commons_core/commons_core.dart';
 
@@ -13,7 +14,8 @@ void main() async {
 
   var cascadeHandler = Cascade()
       .add(_di.get<LoginApi>().getHandler())
-      .add(_di.get<RegisterApi>().getHandler())
+      .add(_di.get<RegisterUserApi>().getHandler())
+      .add(_di.get<RegisterCondoApi>().getHandler())
       .handler;
 
   var handler = Pipeline()

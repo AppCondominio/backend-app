@@ -4,42 +4,43 @@ import 'package:shelf/shelf.dart';
 
 import 'package:shelf_router/shelf_router.dart';
 
-import '../infra/security/security_service.dart';
-import '../models/user_model.dart';
+import '../models/condo_model.dart';
 import '../services/generic_service.dart';
 import 'api.dart';
 
-class RegisterApi extends Api {
-  final SecurityService _securityService;
-  final GenericService<UserModel> _service;
+class RegisterCondoApi extends Api {
+  final GenericService<CondoModel> _service;
 
-  RegisterApi(this._securityService, this._service);
+  RegisterCondoApi(this._service);
   @override
   Handler getHandler({List<Middleware>? middlewares, bool isSecurity = false}) {
     Router router = Router();
     int id = 0;
-    router.post('/register', (Request req) async {
+    router.post('/register/condo', (Request req) async {
       id++;
       var result = await req.readAsString();
       var body = jsonDecode(result);
-      var token = await _securityService.generateJWT(body['name']);
+
+      
 
       Map map = {
         "id": id,
-        "name": body['name'],
-        "lastName": body['lastName'],
+        "condoName": body['condoName'],
         'documentNumber': body['documentNumber'],
         'email': body['email'],
-        'password': body['password'],
-        'jwtToken': token
+        'zipCode': body['zipCode'],
+        'numberAddress': body['numberAddress'],
+        'optionalAddress': body['optionalAddress'],
+        'idUser': body['idUser'],
+        'plan': body['plan']
       };
 
-      _service.save(UserModel.fromJson(map));
-      return Response(201, body: "Save successful");
+      _service.save(CondoModel.fromJson(map));
+      return Response(201, body: "Condo Save Successful");
     });
 
-    router.get('/register', (Request req) async {
-      List<UserModel> registers = _service.findAll();
+    router.get('/register/condo', (Request req) async {
+      List<CondoModel> registers = _service.findAll();
       List<Map> registerMap = registers.map((e) => e.toJson()).toList();
       return Response.ok(jsonEncode(registerMap));
     });

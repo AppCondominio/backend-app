@@ -1,8 +1,8 @@
-import '../models/user_model.dart';
+import '../models/condo_model.dart';
 import 'generic_service.dart';
 
-class RegisterService implements GenericService<UserModel> {
-  final List<UserModel> _fakeDB = [];
+class RegisterCondoService implements GenericService<CondoModel> {
+  final List<CondoModel> _fakeDB = [];
 
   @override
   bool delete(int id) {
@@ -11,17 +11,17 @@ class RegisterService implements GenericService<UserModel> {
   }
 
   @override
-  List<UserModel> findAll() {
+  List<CondoModel> findAll() {
     return _fakeDB;
   }
 
   @override
-  UserModel findOne(int id) {
+  CondoModel findOne(int id) {
     return _fakeDB.firstWhere((e) => e.id == id);
   }
 
   @override
-  bool save(UserModel value) {
+  bool save(CondoModel value) {
       _fakeDB.add(value);
     return true;
   }
