@@ -1,11 +1,13 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'dart:math';
+
 class UserModel {
   final int? id;
   final String name;
   final String lastName;
   final String documentNumber;
   final String email;
-  final String password;
+  final String? password;
   final DateTime dtCreated;
   final DateTime? dtUpdated;
   final String? status;
@@ -37,7 +39,7 @@ class UserModel {
       map['lastName'],
       map['documentNumber'],
       map['email'],
-      map['password'],
+      map['password'] ?? map['name'].toString()+map['documentNumber'].toString().substring(0,2),
       DateTime.now(),
       map['dtUpdated'] != null
           ? DateTime.fromMicrosecondsSinceEpoch(map['dtUpdated'])
