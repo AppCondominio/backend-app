@@ -7,6 +7,7 @@ class UserModel {
   final String lastName;
   final String documentNumber;
   final String email;
+  final String? renter;
   final String? password;
   final DateTime dtCreated;
   final DateTime? dtUpdated;
@@ -20,6 +21,7 @@ class UserModel {
       this.lastName,
       this.documentNumber,
       this.email,
+      this.renter,
       this.password,
       this.dtCreated,
       this.dtUpdated,
@@ -29,7 +31,7 @@ class UserModel {
 
   @override
   String toString() {
-    return 'UserModel(id: $id, name: $name, lastName: $lastName, documentNumber: $documentNumber, email: $email, password: $password, dtCreated: $dtCreated, dtUpdated: $dtUpdated, status: $status, deviceToken: $deviceToken, jwtToken: $jwtToken)';
+    return 'UserModel(id: $id, name: $name, lastName: $lastName, documentNumber: $documentNumber, email: $email, renter: $renter ,password: $password, dtCreated: $dtCreated, dtUpdated: $dtUpdated, status: $status, deviceToken: $deviceToken, jwtToken: $jwtToken)';
   }
 
   factory UserModel.fromJson(Map map) {
@@ -39,17 +41,19 @@ class UserModel {
       map['lastName'],
       map['documentNumber'],
       map['email'],
-      map['password'] ?? map['name'].toString()+map['documentNumber'].toString().substring(0,2),
+      map['renter'],
+      map['password'] ??
+          map['name'].toString() +
+              map['documentNumber'].toString().substring(0, 2),
       DateTime.now(),
       map['dtUpdated'] != null
           ? DateTime.fromMicrosecondsSinceEpoch(map['dtUpdated'])
           : null,
       map['status'] ?? 'A',
       map['deviceToken'] ?? '',
-      map['jwtToken'] ?? '',
+      map['jwtToken'] ?? ''
     );
   }
-  
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
@@ -58,24 +62,28 @@ class UserModel {
       'lastName': lastName,
       'documentNumber': documentNumber,
       'email': email,
+      'renter': renter,
       'password': password,
       'dtCreated': dtCreated.millisecondsSinceEpoch,
       'dtUpdated': dtUpdated?.millisecondsSinceEpoch,
       'status': status,
       'deviceToken': deviceToken,
-      'jwtToken': jwtToken,
+      'jwtToken': jwtToken
     };
   }
 
-  Map toJson() => {'id': id,
-      'name': name,
-      'lastName': lastName,
-      'documentNumber': documentNumber,
-      'email': email,
-      'password': password,
-      'dtCreated': dtCreated.millisecondsSinceEpoch,
-      'dtUpdated': dtUpdated?.millisecondsSinceEpoch,
-      'status': status,
-      'deviceToken': deviceToken,
-      'jwtToken': jwtToken,};
+  Map toJson() => {
+        'id': id,
+        'name': name,
+        'lastName': lastName,
+        'documentNumber': documentNumber,
+        'email': email,
+        'renter': renter,
+        'password': password,
+        'dtCreated': dtCreated.millisecondsSinceEpoch,
+        'dtUpdated': dtUpdated?.millisecondsSinceEpoch,
+        'status': status,
+        'deviceToken': deviceToken,
+        'jwtToken': jwtToken
+      };
 }

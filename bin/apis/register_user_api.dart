@@ -30,6 +30,7 @@ class RegisterUserApi extends Api {
         "lastName": body['lastName'],
         'documentNumber': body['documentNumber'],
         'email': body['email'],
+        'renter': body['renter'] ? 'Sim' : 'Não',
         'password': body['password'],
         'jwtToken': token
       };
@@ -38,10 +39,40 @@ class RegisterUserApi extends Api {
       return Response(201, body: "User Save Successful");
     });
 
-    router.get('/register/user', (Request req) async {
+    router.get('/user', (Request req) async {
+      String? id = req.url.queryParameters['id'];
+      if (id == null) {
+        return Response.notFound("nao achei o id");
+      }
+      UserModel user = _service.findOne(int.parse(id));
+      return Response.ok(jsonEncode(user));
+    });
+
+    router.get('/users', (Request req) async {
       List<UserModel> registers = _service.findAll();
       List<Map> registerMap = registers.map((e) => e.toJson()).toList();
       return Response.ok(jsonEncode(registerMap));
+    });
+
+    router.put('/user/edit', (Request req) async {
+      int id = int.parse(req.url.queryParameters['id']!);
+      var result = await req.readAsString();
+      var body = jsonDecode(result);
+      UserModel user = _service.findOne(id);
+      Map map = {
+        'id': id,
+        'name': body['name'].toString().isEmpty ? user.name : body['name'],
+        'lastName': body['lastName'].toString().isEmpty ? user.lastName : body['lastName'],
+        'documentNumber': user.documentNumber,
+        'email': body['email'].toString().isEmpty ? user.email : body['email'],
+        'renter': body['renter'] ? 'Sim' : 'Não',
+        'password': user.password,
+        'jwtToken': user.jwtToken
+        
+      };
+      _service.delete(id);
+      _service.save(UserModel.fromJson(map));
+      return Response.ok("Editado.");
     });
 
     return createHandler(

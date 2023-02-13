@@ -1,10 +1,9 @@
-
-import '../models/user_model.dart';
+import '../models/recreation_model.dart';
 import 'generic_service.dart';
 
-class RegisterUserService implements GenericService<UserModel> {
-  final List<UserModel> _fakeDB = [];
-
+class RecreationService implements GenericService<RecreationModel> {
+  final List<RecreationModel> _fakeDB = [];
+  
   @override
   bool delete(int id) {
     _fakeDB.removeWhere((e) => e.id == id);
@@ -12,17 +11,17 @@ class RegisterUserService implements GenericService<UserModel> {
   }
 
   @override
-  List<UserModel> findAll() {
+  List<RecreationModel> findAll() {
     return _fakeDB;
   }
 
   @override
-  UserModel findOne(int id) {
+  RecreationModel findOne(int id) {
     return _fakeDB.firstWhere((e) => e.id == id);
   }
 
   @override
-  bool save(UserModel value) {
+  bool save(RecreationModel value) {
       _fakeDB.add(value);
     return true;
   }

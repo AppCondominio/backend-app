@@ -22,7 +22,13 @@ class RegisterResidentService implements GenericService<ResidentModel> {
 
   @override
   bool save(ResidentModel value) {
-      _fakeDB.add(value);
+    _fakeDB.add(value);
+    return true;
+  }
+
+  @override
+  bool update(int id) {
+    _fakeDB.firstWhere((e) => e.id == id);
     return true;
   }
 }

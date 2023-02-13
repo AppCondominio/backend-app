@@ -1,6 +1,8 @@
 import 'package:shelf/shelf.dart';
 
+import 'apis/condo_api.dart';
 import 'apis/login_api.dart';
+import 'apis/recreation_api.dart';
 import 'apis/register_condo_api.dart';
 import 'apis/register_resident_api.dart';
 import 'apis/register_user_api.dart';
@@ -17,6 +19,8 @@ void main() async {
       .add(_di.get<LoginApi>().getHandler())
       .add(_di.get<RegisterUserApi>().getHandler())
       .add(_di.get<RegisterCondoApi>().getHandler())
+      .add(_di.get<CondoApi>().getHandler())
+      .add(_di.get<RecreationApi>().getHandler())
       .add(_di.get<RegisterResidentApi>().getHandler())
       .handler;
 

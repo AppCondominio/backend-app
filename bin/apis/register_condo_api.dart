@@ -21,8 +21,6 @@ class RegisterCondoApi extends Api {
       var result = await req.readAsString();
       var body = jsonDecode(result);
 
-      
-
       Map map = {
         "id": id,
         "condoName": body['condoName'],
@@ -31,18 +29,51 @@ class RegisterCondoApi extends Api {
         'zipCode': body['zipCode'],
         'numberAddress': body['numberAddress'],
         'optionalAddress': body['optionalAddress'],
-        'idUser': body['idUser'],
-        'plan': body['plan']
+        'plan': body['plan'],
+        'isSet': body['isSet']
       };
 
       _service.save(CondoModel.fromJson(map));
       return Response(201, body: "Condo Save Successful");
     });
 
-    router.get('/register/condo', (Request req) async {
+    router.get('/get/condo', (Request req) async {
       List<CondoModel> registers = _service.findAll();
       List<Map> registerMap = registers.map((e) => e.toJson()).toList();
       return Response.ok(jsonEncode(registerMap));
+    });
+
+    router.get('/get/condo', (Request req) async {
+      String? id = req.url.queryParameters['id'];
+      if (id == null) {
+        return Response.notFound("nao achei o id");
+      }
+      CondoModel user = _service.findOne(int.parse(id));
+      return Response.ok(jsonEncode(user));
+    });
+
+    router.put('/edit/condo', (Request req) async {
+      int id = int.parse(req.url.queryParameters['id']!);
+      var result = await req.readAsString();
+      var body = jsonDecode(result);
+      CondoModel condo = _service.findOne(id);
+      Map map = {
+        "id": id,
+        "condoName": condo.condoName,
+        'documentNumber': condo.documentNumber,
+        'password': condo.password,
+        'email': condo.email,
+        'zipCode': condo.zipCode,
+        'numberAddress': condo.numberAddress,
+        'optionalAddress': condo.optionalAddress,
+        'dtCreated': condo.dtCreated,
+        'dtUpdated': DateTime.now(),
+        'plan': condo.plan,
+        'isSet': body['isSet']
+      };
+      _service.delete(id);
+      _service.save(CondoModel.fromJson(map));
+      return Response.ok("Editado.");
     });
 
     return createHandler(

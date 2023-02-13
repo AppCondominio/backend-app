@@ -1,6 +1,8 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:math';
 
+import 'package:intl/intl.dart';
+
 class CondoModel {
   final int? id;
   final String condoName;
@@ -11,12 +13,13 @@ class CondoModel {
   final String numberAddress;
   final String? optionalAddress;
   //final String imageUrl;
-  final DateTime dtCreated;
-  final DateTime? dtUpdated;
+  final String dtCreated;
+  final String? dtUpdated;
   final String? status;
   // Apenas para testes
-  final int? idUser;
   final String plan;
+  final bool isSet;
+  // Configuracoes
 
   CondoModel(
       this.id,
@@ -30,8 +33,8 @@ class CondoModel {
       this.dtCreated,
       this.dtUpdated,
       this.status,
-      this.idUser,
-      this.plan);
+      this.plan,
+      this.isSet);
 
   factory CondoModel.fromJson(Map map) {
     return CondoModel(
@@ -43,13 +46,13 @@ class CondoModel {
         map['zipCode'],
         map['numberAddress'],
         map['optionalAddress'] ?? '',
-        DateTime.now(),
+        map['dtCreated'] ?? DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime.now()),
         map['dtUpdated'] != null
-            ? DateTime.fromMicrosecondsSinceEpoch(map['dtUpdated'])
+            ? DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime.now())
             : null,
         map['status'] ?? 'A',
-        map['idUser'] ?? '',
-        map['plan']);
+        map['plan'],
+        map['isSet'] ?? false);
   }
 
   Map<String, dynamic> toMap() {
@@ -62,11 +65,11 @@ class CondoModel {
       'zipCode': zipCode,
       'numberAddress': numberAddress,
       'optionalAddress': optionalAddress,
-      'dtCreated': dtCreated.millisecondsSinceEpoch,
-      'dtUpdated': dtUpdated?.millisecondsSinceEpoch,
+      'dtCreated': dtCreated,
+      'dtUpdated': dtUpdated,
       'status': status,
-      'idUser': idUser,
-      'plan':plan
+      'plan': plan,
+      'isSet': isSet
     };
   }
 
@@ -79,10 +82,10 @@ class CondoModel {
         'zipCode': zipCode,
         'numberAddress': numberAddress,
         'optionalAddress': optionalAddress,
-        'dtCreated': dtCreated.millisecondsSinceEpoch,
-        'dtUpdated': dtUpdated?.millisecondsSinceEpoch,
+        'dtCreated': dtCreated,
+        'dtUpdated': dtUpdated,
         'status': status,
-        'idUser': idUser,
-        'plan':plan
+        'plan': plan,
+        'isSet': isSet
       };
 }

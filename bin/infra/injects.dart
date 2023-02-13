@@ -1,13 +1,19 @@
 import 'package:commons_core/commons_core.dart';
 
+import '../apis/condo_api.dart';
 import '../apis/login_api.dart';
+import '../apis/recreation_api.dart';
 import '../apis/register_condo_api.dart';
 import '../apis/register_resident_api.dart';
 import '../apis/register_user_api.dart';
 import '../models/condo_model.dart';
+import '../models/condo_settings_model.dart';
+import '../models/recreation_model.dart';
 import '../models/resident_model.dart';
 import '../models/user_model.dart';
+import '../services/condo_settings_service.dart';
 import '../services/generic_service.dart';
+import '../services/recreation_service.dart';
 import '../services/register_condo_service.dart';
 import '../services/register_resident_service.dart';
 import '../services/register_user_service.dart';
@@ -29,6 +35,13 @@ class Injects {
     di.register<GenericService<ResidentModel>>(() => RegisterResidentService());
     di.register<RegisterResidentApi>(
         () => RegisterResidentApi(di.get(), di.get()));
+
+    di.register<GenericService<CondoSettingsModel>>(
+        () => CondoSettingsService());
+    di.register<CondoApi>(() => CondoApi(di.get()));
+
+    di.register<GenericService<RecreationModel>>(() => RecreationService());
+    di.register<RecreationApi>(() => RecreationApi(di.get()));
 
     di.register<LoginApi>(() => LoginApi(di.get(), di.get(), di.get()));
 
