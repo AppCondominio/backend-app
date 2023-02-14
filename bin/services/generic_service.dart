@@ -3,5 +3,6 @@ abstract class GenericService<T> {
   List<T> findAll();
   bool save(T value);
   bool delete(int id);
+  bool deleteAll();
   //bool update(int id);
 }

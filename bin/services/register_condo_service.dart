@@ -25,4 +25,10 @@ class RegisterCondoService implements GenericService<CondoModel> {
       _fakeDB.add(value);
     return true;
   }
+  
+  @override
+  bool deleteAll() {
+    _fakeDB.clear();
+    return true;
+  }
 }

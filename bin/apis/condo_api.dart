@@ -17,6 +17,7 @@ class CondoApi extends Api {
     Router router = Router();
     int id = 0;
     // Config Condo
+
     // Adicionar configuracao inicial
     router.post('/register/condo/settings', (Request req) async {
       id++;
@@ -37,7 +38,7 @@ class CondoApi extends Api {
 
     // Recuperar as configuracoes
     router.get('/get/condo/settings', (Request req) async {
-      String? id = req.url.queryParameters['idCondo'];
+      String? id = req.url.queryParameters['id'];
       if (id == null) {
         return Response.notFound("Not found the id -> $id");
       }
@@ -55,9 +56,9 @@ class CondoApi extends Api {
 
       Map map = {
         'id': settings.id,
-        'towers': body['towers'],
-        'recreationArea': body['recreationArea'],
-        'cooperator': body['cooperator'],
+        'towers': body['towers'] ?? settings.towers,
+        'recreationArea': body['recreationArea'] ?? settings.recreationArea,
+        'cooperator': body['cooperator'] ?? settings.cooperator,
         'dtCreated': settings.dtCreated,
         'dtUpdated': 'a',
         'idCondo': settings.idCondo

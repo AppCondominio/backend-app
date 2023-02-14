@@ -44,7 +44,7 @@ class UserModel {
       map['renter'],
       map['password'] ??
           map['name'].toString() +
-              map['documentNumber'].toString().substring(0, 2),
+              map['documentNumber'].toString().substring(0, 3),
       DateTime.now(),
       map['dtUpdated'] != null
           ? DateTime.fromMicrosecondsSinceEpoch(map['dtUpdated'])

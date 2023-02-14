@@ -31,4 +31,10 @@ class RegisterResidentService implements GenericService<ResidentModel> {
     _fakeDB.firstWhere((e) => e.id == id);
     return true;
   }
+  
+  @override
+  bool deleteAll() {
+    _fakeDB.clear();
+    return true;
+  }
 }

@@ -26,4 +26,10 @@ class RegisterUserService implements GenericService<UserModel> {
       _fakeDB.add(value);
     return true;
   }
+  
+  @override
+  bool deleteAll() {
+    _fakeDB.clear();
+    return true;
+  }
 }

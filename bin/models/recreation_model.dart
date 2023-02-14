@@ -5,7 +5,7 @@ class RecreationModel {
   final int? id;
   final String name;
   final double? price;
-  final List availability;
+  final Map availability;
   final String dtCreated;
   final String? dtUpdated;
   final String? status;

@@ -25,4 +25,10 @@ class CondoSettingsService implements GenericService<CondoSettingsModel> {
     _fakeDB.add(value);
     return true;
   }
+  
+  @override
+  bool deleteAll() {
+    _fakeDB.clear();
+    return true;
+  }
 }

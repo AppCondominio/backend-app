@@ -44,6 +44,11 @@ class RecreationApi extends Api {
       return Response.ok("Recreation $id deleted.");
     });
 
+    router.delete('/delete/all/recreation', (Request req) async {
+      _service.deleteAll();
+      return Response.ok("All recreations was deleted.");
+    });
+
     router.put('/edit/recreation', (Request req) async {
       int id = int.parse(req.url.queryParameters['id']!);
       var result = await req.readAsString();
