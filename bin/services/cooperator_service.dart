@@ -1,8 +1,8 @@
-import '../models/condo_settings_model.dart';
+import '../models/cooperator_model.dart';
 import 'generic_service.dart';
 
-class CondoSettingsService implements GenericService<CondoSettingsModel> {
-  final List<CondoSettingsModel> _fakeDB = [];
+class CooperatorService implements GenericService<CooperatorModel> {
+  final List<CooperatorModel> _fakeDB = [];
 
   @override
   bool delete(int id) {
@@ -11,21 +11,21 @@ class CondoSettingsService implements GenericService<CondoSettingsModel> {
   }
 
   @override
-  List<CondoSettingsModel> findAll() {
+  List<CooperatorModel> findAll() {
     return _fakeDB;
   }
 
   @override
-  CondoSettingsModel findOne(int id) {
+  CooperatorModel findOne(int id) {
     return _fakeDB.firstWhere((e) => e.id == id);
   }
 
   @override
-  bool save(CondoSettingsModel value) {
+  bool save(CooperatorModel value) {
     _fakeDB.add(value);
     return true;
   }
-
+  
   @override
   bool deleteAll() {
     _fakeDB.clear();

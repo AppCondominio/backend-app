@@ -14,45 +14,48 @@ class UserModel {
   final String? status;
   final String? deviceToken;
   final String? jwtToken;
+  final int? idCondo;
 
   UserModel(
-      this.id,
-      this.name,
-      this.lastName,
-      this.documentNumber,
-      this.email,
-      this.renter,
-      this.password,
-      this.dtCreated,
-      this.dtUpdated,
-      this.status,
-      this.deviceToken,
-      this.jwtToken);
+    this.id,
+    this.name,
+    this.lastName,
+    this.documentNumber,
+    this.email,
+    this.renter,
+    this.password,
+    this.dtCreated,
+    this.dtUpdated,
+    this.status,
+    this.deviceToken,
+    this.jwtToken,
+    this.idCondo,
+  );
 
   @override
   String toString() {
-    return 'UserModel(id: $id, name: $name, lastName: $lastName, documentNumber: $documentNumber, email: $email, renter: $renter ,password: $password, dtCreated: $dtCreated, dtUpdated: $dtUpdated, status: $status, deviceToken: $deviceToken, jwtToken: $jwtToken)';
+    return 'UserModel(id: $id, name: $name, lastName: $lastName, documentNumber: $documentNumber, email: $email, renter: $renter, password: $password, dtCreated: $dtCreated, dtUpdated: $dtUpdated, status: $status, deviceToken: $deviceToken, jwtToken: $jwtToken, idCondo: $idCondo)';
   }
 
   factory UserModel.fromJson(Map map) {
     return UserModel(
-      map['id'] ?? '',
-      map['name'],
-      map['lastName'],
-      map['documentNumber'],
-      map['email'],
-      map['renter'],
-      map['password'] ??
-          map['name'].toString() +
-              map['documentNumber'].toString().substring(0, 3),
-      DateTime.now(),
-      map['dtUpdated'] != null
-          ? DateTime.fromMicrosecondsSinceEpoch(map['dtUpdated'])
-          : null,
-      map['status'] ?? 'A',
-      map['deviceToken'] ?? '',
-      map['jwtToken'] ?? ''
-    );
+        map['id'] ?? '',
+        map['name'],
+        map['lastName'],
+        map['documentNumber'],
+        map['email'],
+        map['renter'],
+        map['password'] ??
+            map['name'].toString() +
+                map['documentNumber'].toString().substring(0, 3),
+        DateTime.now(),
+        map['dtUpdated'] != null
+            ? DateTime.fromMicrosecondsSinceEpoch(map['dtUpdated'])
+            : null,
+        map['status'] ?? 'A',
+        map['deviceToken'] ?? '',
+        map['jwtToken'] ?? '',
+        map['idCondo']);
   }
 
   Map<String, dynamic> toMap() {
@@ -68,7 +71,8 @@ class UserModel {
       'dtUpdated': dtUpdated?.millisecondsSinceEpoch,
       'status': status,
       'deviceToken': deviceToken,
-      'jwtToken': jwtToken
+      'jwtToken': jwtToken,
+      'idCondo': idCondo
     };
   }
 
@@ -84,6 +88,7 @@ class UserModel {
         'dtUpdated': dtUpdated?.millisecondsSinceEpoch,
         'status': status,
         'deviceToken': deviceToken,
-        'jwtToken': jwtToken
+        'jwtToken': jwtToken,
+        'idCondo': idCondo
       };
 }

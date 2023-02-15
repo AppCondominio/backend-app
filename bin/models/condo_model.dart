@@ -19,7 +19,6 @@ class CondoModel {
   // Apenas para testes
   final String plan;
   final bool isSet;
-  // Configuracoes
 
   CondoModel(
       this.id,
@@ -41,7 +40,7 @@ class CondoModel {
         map['id'] ?? '',
         map['condoName'],
         map['documentNumber'],
-        map['password'] ?? Random().nextInt(50).toString(),
+        map['password'] ?? "1",//Random().nextInt(50).toString(),
         map['email'],
         map['zipCode'],
         map['numberAddress'],

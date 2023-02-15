@@ -4,16 +4,14 @@ import 'package:shelf/shelf.dart';
 
 import 'package:shelf_router/shelf_router.dart';
 
-import '../infra/security/security_service.dart';
 import '../models/resident_model.dart';
 import '../services/generic_service.dart';
 import 'api.dart';
 
 class RegisterResidentApi extends Api {
-  final SecurityService _securityService;
   final GenericService<ResidentModel> _service;
 
-  RegisterResidentApi(this._securityService, this._service);
+  RegisterResidentApi(this._service);
   @override
   Handler getHandler({List<Middleware>? middlewares, bool isSecurity = false}) {
     Router router = Router();
@@ -27,18 +25,24 @@ class RegisterResidentApi extends Api {
         'id': id,
         'room': body['room'],
         'optionalRoom': body['optionalRoom'],
-        'idUser': body['idUser']
+        'idUser': body['idUser'],
+        'idCondo': body['idCondo']
       };
       _service.save(ResidentModel.fromJson(map));
       return Response.ok("Morador Salvo!");
     });
 
-    router.get('/get/resident', (Request req) async {
+    router.get('/get/residents', (Request req) async {
+      String? id = req.url.queryParameters['idCondo'];
+
       List<ResidentModel> registers = _service.findAll();
       List<Map> registerMap = registers.map((e) => e.toJson()).toList();
-      registerMap.sort(
+      var result =
+          registerMap.where((e) => e['idCondo'] == int.parse(id!)).toList();
+      result.sort(
           ((a, b) => int.parse(a['room']).compareTo(int.parse(b['room']))));
-      return Response.ok(jsonEncode(registerMap));
+      print(result);
+      return Response.ok(jsonEncode(result));
     });
 
     router.delete('/delete/resident', (Request req) async {

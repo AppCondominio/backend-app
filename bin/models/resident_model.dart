@@ -5,26 +5,24 @@ class ResidentModel {
   final String? optionalRoom;
   //apenas para testes
   final String idUser;
+  final int idCondo;
 
   ResidentModel(
     this.id,
     this.room,
     this.optionalRoom,
     this.idUser,
+    this.idCondo,
   );
 
   @override
   String toString() {
-    return 'ResidentModel(id: $id, room: $room, optionalRoom: $optionalRoom, idUser: $idUser)';
+    return 'ResidentModel(id: $id, room: $room, optionalRoom: $optionalRoom, idUser: $idUser, idCondo: $idCondo)';
   }
 
   factory ResidentModel.fromJson(Map map) {
-    return ResidentModel(
-      map['id'] ?? '',
-      map['room'],
-      map['optionalRoom'] ?? '',
-      map['idUser'],
-    );
+    return ResidentModel(map['id'] ?? '', map['room'],
+        map['optionalRoom'] ?? '', map['idUser'], map['idCondo']);
   }
 
   Map<String, dynamic> toMap() {
@@ -32,10 +30,16 @@ class ResidentModel {
       'id': id,
       'room': room,
       'optionalRoom': optionalRoom,
-      'idUser': idUser
+      'idUser': idUser,
+      'idCondo': idCondo
     };
   }
 
-  Map toJson() =>
-      {'id': id, 'room': room, 'optionalRoom': optionalRoom, 'idUser': idUser};
+  Map toJson() => {
+        'id': id,
+        'room': room,
+        'optionalRoom': optionalRoom,
+        'idUser': idUser,
+        'idCondo': idCondo,
+      };
 }
