@@ -38,7 +38,7 @@ class CondoApi extends Api {
 
     // Recuperar as configuracoes
     router.get('/get/condo/settings', (Request req) async {
-      String? id = req.url.queryParameters['id'];
+      String? id = req.url.queryParameters['idCondo'];
       if (id == null) {
         return Response.notFound("Not found the id -> $id");
       }
@@ -48,7 +48,7 @@ class CondoApi extends Api {
 
     // Editar configuracoes
     router.put('/edit/condo/settings', (Request req) async {
-      int id = int.parse(req.url.queryParameters['id']!);
+      int id = int.parse(req.url.queryParameters['idCondo']!);
       CondoSettingsModel settings = _service.findOne(id);
 
       var result = await req.readAsString();
@@ -64,7 +64,7 @@ class CondoApi extends Api {
         'idCondo': settings.idCondo
       };
 
-      _service.delete(id);
+      _service.delete(settings.id!);
       _service.save(CondoSettingsModel.fromJson(map));
       return Response.ok("Settings Edited.");
     });

@@ -26,6 +26,7 @@ class CooperatorApi extends Api {
         'name': body['name'],
         'documentNumber': body['documentNumber'],
         'role': body['role'],
+        'idCondo': body['idCondo']
       };
 
       _service.save(CooperatorModel.fromJson(map));
@@ -33,9 +34,13 @@ class CooperatorApi extends Api {
     });
 
     router.get('/get/cooperator', (Request req) async {
+      String? id = req.url.queryParameters['idCondo'];
+
       List<CooperatorModel> cooperators = _service.findAll();
       List<Map> cooperatorMap = cooperators.map((e) => e.toJson()).toList();
-      return Response.ok(jsonEncode(cooperatorMap));
+      var result = cooperatorMap.where((e) => e['idCondo'] == int.parse(id!)).toList();
+
+      return Response.ok(jsonEncode(result));
     });
 
     router.delete('/delete/cooperator', (Request req) async {

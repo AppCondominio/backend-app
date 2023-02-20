@@ -16,8 +16,8 @@ class CondoSettingsService implements GenericService<CondoSettingsModel> {
   }
 
   @override
-  CondoSettingsModel findOne(int id) {
-    return _fakeDB.firstWhere((e) => e.id == id);
+  CondoSettingsModel findOne(int idCondo) {
+    return _fakeDB.firstWhere((e) => e.idCondo == idCondo);
   }
 
   @override

@@ -1,3 +1,4 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:intl/intl.dart';
 
 class CooperatorModel {
@@ -8,6 +9,7 @@ class CooperatorModel {
   final String dtCreated;
   final String? dtUpdated;
   final String? status;
+  final int idCondo;
 
   CooperatorModel(
     this.id,
@@ -16,7 +18,7 @@ class CooperatorModel {
     this.role,
     this.dtCreated,
     this.dtUpdated,
-    this.status,
+    this.status, this.idCondo,
   );
 
   factory CooperatorModel.fromJson(Map map) {
@@ -31,6 +33,7 @@ class CooperatorModel {
           ? DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime.now())
           : null,
       map['status'] ?? 'A',
+      map['idCondo']
     );
   }
 
@@ -42,7 +45,8 @@ class CooperatorModel {
       'role': role,
       'dtCreated': dtCreated,
       'dtUpdated': dtUpdated,
-      'status': status
+      'status': status,
+      'idCondo':idCondo
     };
   }
 
@@ -53,6 +57,12 @@ class CooperatorModel {
         'role': role,
         'dtCreated': dtCreated,
         'dtUpdated': dtUpdated,
-        'status': status
+        'status': status,
+        'idCondo':idCondo
       };
+
+  @override
+  String toString() {
+    return 'CooperatorModel(id: $id, name: $name, documentNumber: $documentNumber, role: $role, dtCreated: $dtCreated, dtUpdated: $dtUpdated, status: $status, idCondo: $idCondo)';
+  }
 }

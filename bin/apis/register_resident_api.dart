@@ -41,7 +41,6 @@ class RegisterResidentApi extends Api {
           registerMap.where((e) => e['idCondo'] == int.parse(id!)).toList();
       result.sort(
           ((a, b) => int.parse(a['room']).compareTo(int.parse(b['room']))));
-      print(result);
       return Response.ok(jsonEncode(result));
     });
 
