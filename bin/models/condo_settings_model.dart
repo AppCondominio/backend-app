@@ -2,7 +2,7 @@ import 'package:intl/intl.dart';
 
 class CondoSettingsModel {
   final int? id;
-  final int? towers;
+  final List? towers;
   final int? recreationArea;
   final List cooperator;
   final String dtCreated;
@@ -22,7 +22,7 @@ class CondoSettingsModel {
   factory CondoSettingsModel.fromJson(Map map) {
     return CondoSettingsModel(
       map['id'] ?? '',
-      map['towers'] ?? 1,
+      map['towers'] ?? [],
       map['recreationArea'] ?? 0,
       map['cooperator'],
       map['dtCreated'] ??

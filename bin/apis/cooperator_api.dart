@@ -38,9 +38,14 @@ class CooperatorApi extends Api {
 
       List<CooperatorModel> cooperators = _service.findAll();
       List<Map> cooperatorMap = cooperators.map((e) => e.toJson()).toList();
-      var result = cooperatorMap.where((e) => e['idCondo'] == int.parse(id!)).toList();
 
-      return Response.ok(jsonEncode(result));
+      if (id != null) {
+        var result = cooperatorMap.where((e) => e['idCondo'] == int.parse(id)).toList();
+        return Response.ok(jsonEncode(result));
+      } else {
+        return Response.ok(jsonEncode(cooperatorMap));
+      }
+
     });
 
     router.delete('/delete/cooperator', (Request req) async {

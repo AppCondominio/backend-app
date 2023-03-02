@@ -1,6 +1,4 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
-import 'dart:math';
-
 class UserModel {
   final int? id;
   final String name;
@@ -14,7 +12,7 @@ class UserModel {
   final String? status;
   final String? deviceToken;
   final String? jwtToken;
-  final int? idCondo;
+  final List? idCondo;
 
   UserModel(
     this.id,

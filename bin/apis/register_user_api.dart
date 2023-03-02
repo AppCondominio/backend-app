@@ -32,7 +32,8 @@ class RegisterUserApi extends Api {
         'email': body['email'],
         'renter': body['renter'] ? 'Sim' : 'Não',
         'password': body['password'],
-        'jwtToken': token
+        'jwtToken': token,
+        'idCondo': body['idCondo']
       };
 
       _service.save(UserModel.fromJson(map));

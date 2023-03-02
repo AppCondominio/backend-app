@@ -7,6 +7,7 @@ import 'apis/recreation_api.dart';
 import 'apis/register_condo_api.dart';
 import 'apis/register_resident_api.dart';
 import 'apis/register_user_api.dart';
+import 'apis/warning_api.dart';
 import 'infra/custom_server.dart';
 import 'package:commons_core/commons_core.dart';
 
@@ -24,6 +25,7 @@ void main() async {
       .add(_di.get<RecreationApi>().getHandler())
       .add(_di.get<CooperatorApi>().getHandler())
       .add(_di.get<RegisterResidentApi>().getHandler())
+      .add(_di.get<WarningApi>().getHandler())
       .handler;
 
   var handler = Pipeline()
