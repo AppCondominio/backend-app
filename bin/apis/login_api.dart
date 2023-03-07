@@ -24,11 +24,11 @@ class LoginApi extends Api {
       String document = body['documentNumber'];
       String password = body['password'];
 
-      List<CondoModel> listRegistersCondo = _serviceCondo.findAll();
+      List<CondoModel> listRegistersCondo = await _serviceCondo.findAll();
       List<Map> listRegistersCondoMap =
           listRegistersCondo.map((e) => e.toJson()).toList();
 
-      List<UserModel> listRegistersUser = _serviceUser.findAll();
+      List<UserModel> listRegistersUser = await _serviceUser.findAll();
       List<Map> listRegistersUserMap =
           listRegistersUser.map((e) => e.toJson()).toList();
 

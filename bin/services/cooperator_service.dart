@@ -5,30 +5,24 @@ class CooperatorService implements GenericService<CooperatorModel> {
   final List<CooperatorModel> _fakeDB = [];
 
   @override
-  bool delete(int id) {
+  Future<bool> delete(int id) async {
     _fakeDB.removeWhere((e) => e.id == id);
     return true;
   }
 
   @override
-  List<CooperatorModel> findAll() {
+  Future<List<CooperatorModel>> findAll() async {
     return _fakeDB;
   }
 
   @override
-  CooperatorModel findOne(int id) {
+  Future<CooperatorModel?> findOne(int id) async {
     return _fakeDB.firstWhere((e) => e.id == id);
   }
 
   @override
-  bool save(CooperatorModel value) {
+  Future<bool> save(CooperatorModel value) async {
     _fakeDB.add(value);
-    return true;
-  }
-  
-  @override
-  bool deleteAll() {
-    _fakeDB.clear();
     return true;
   }
 }

@@ -45,12 +45,12 @@ class RegisterUserApi extends Api {
       if (id == null) {
         return Response.notFound("nao achei o id");
       }
-      UserModel user = _service.findOne(int.parse(id));
+      UserModel? user = await _service.findOne(int.parse(id));
       return Response.ok(jsonEncode(user));
     });
 
     router.get('/users', (Request req) async {
-      List<UserModel> registers = _service.findAll();
+      List<UserModel> registers = await _service.findAll();
       List<Map> registerMap = registers.map((e) => e.toJson()).toList();
       return Response.ok(jsonEncode(registerMap));
     });
@@ -59,12 +59,12 @@ class RegisterUserApi extends Api {
       int id = int.parse(req.url.queryParameters['id']!);
       var result = await req.readAsString();
       var body = jsonDecode(result);
-      UserModel user = _service.findOne(id);
+      UserModel? user = await _service.findOne(id);
       Map map = {
         'id': id,
-        'name': body['name'].toString().isEmpty ? user.name : body['name'],
-        'lastName': body['lastName'].toString().isEmpty ? user.lastName : body['lastName'],
-        'documentNumber': user.documentNumber,
+        'name': body['name'].toString().isEmpty ? user!.name : body['name'],
+        'lastName': body['lastName'].toString().isEmpty ? user!.lastName : body['lastName'],
+        'documentNumber': user!.documentNumber,
         'email': body['email'].toString().isEmpty ? user.email : body['email'],
         'renter': body['renter'] ? 'Sim' : 'Não',
         'password': user.password,

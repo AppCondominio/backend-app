@@ -5,30 +5,24 @@ class WarningService implements GenericService<WarningModel> {
   final List<WarningModel> _fakeDB = [];
 
   @override
-  bool delete(int id) {
+  Future<bool> delete(int id) async {
     _fakeDB.removeWhere((e) => e.id == id);
     return true;
   }
 
   @override
-  List<WarningModel> findAll() {
+  Future<List<WarningModel>> findAll() async {
     return _fakeDB;
   }
 
   @override
-  WarningModel findOne(int idCondo) {
+  Future<WarningModel?> findOne(int idCondo) async {
     return _fakeDB.firstWhere((e) => e.idCondo == idCondo);
   }
 
   @override
-  bool save(WarningModel value) {
+  Future<bool> save(WarningModel value) async {
     _fakeDB.add(value);
-    return true;
-  }
-
-  @override
-  bool deleteAll() {
-    _fakeDB.clear();
     return true;
   }
 }

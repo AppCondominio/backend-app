@@ -33,7 +33,7 @@ class RecreationApi extends Api {
     });
 
     router.get('/get/recreation', (Request req) async {
-      List<RecreationModel> recreations = _service.findAll();
+      List<RecreationModel> recreations = await _service.findAll();
       List<Map> recreationsMap = recreations.map((e) => e.toJson()).toList();
       return Response.ok(jsonEncode(recreationsMap));
     });
@@ -44,22 +44,17 @@ class RecreationApi extends Api {
       return Response.ok("Recreation $id deleted.");
     });
 
-    router.delete('/delete/all/recreation', (Request req) async {
-      _service.deleteAll();
-      return Response.ok("All recreations was deleted.");
-    });
-
     router.put('/edit/recreation', (Request req) async {
       int id = int.parse(req.url.queryParameters['id']!);
       var result = await req.readAsString();
       var body = jsonDecode(result);
-      RecreationModel recreation = _service.findOne(id);
+      RecreationModel? recreation = await _service.findOne(id);
       Map map = {
         'id': id,
-        'name': body['name'] ?? recreation.name,
-        'price': body['price'] ?? recreation.price,
-        'availability': body['availability'] ?? recreation.availability,
-        'dtCreated': recreation.dtCreated,
+        'name': body['name'] ?? recreation!.name,
+        'price': body['price'] ?? recreation!.price,
+        'availability': body['availability'] ?? recreation!.availability,
+        'dtCreated': recreation!.dtCreated,
         'dtUpdated': DateTime.now(),
       };
       _service.delete(id);

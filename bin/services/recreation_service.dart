@@ -5,30 +5,24 @@ class RecreationService implements GenericService<RecreationModel> {
   final List<RecreationModel> _fakeDB = [];
 
   @override
-  bool delete(int id) {
+  Future<bool> delete(int id) async {
     _fakeDB.removeWhere((e) => e.id == id);
     return true;
   }
 
   @override
-  List<RecreationModel> findAll() {
+  Future<List<RecreationModel>> findAll() async {
     return _fakeDB;
   }
 
   @override
-  RecreationModel findOne(int id) {
+  Future<RecreationModel?> findOne(int id) async {
     return _fakeDB.firstWhere((e) => e.id == id);
   }
 
   @override
-  bool save(RecreationModel value) {
+  Future<bool> save(RecreationModel value) async{
     _fakeDB.add(value);
-    return true;
-  }
-
-  @override
-  bool deleteAll() {
-    _fakeDB.clear();
     return true;
   }
 }

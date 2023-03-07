@@ -1,34 +1,26 @@
+import '../dao/condo_dao.dart';
 import '../models/condo_model.dart';
 import 'generic_service.dart';
 
 class RegisterCondoService implements GenericService<CondoModel> {
-  final List<CondoModel> _fakeDB = [];
+  final CondoDAO _condoDAO;
+  RegisterCondoService(this._condoDAO);
 
   @override
-  bool delete(int id) {
-    _fakeDB.removeWhere((e) => e.id == id);
-    return true;
-  }
+  Future<bool> delete(int id) async => await _condoDAO.delete(id);
 
   @override
-  List<CondoModel> findAll() {
-    return _fakeDB;
-  }
+  Future<List<CondoModel>> findAll() async => await _condoDAO.findAll();
 
   @override
-  CondoModel findOne(int id) {
-    return _fakeDB.firstWhere((e) => e.id == id);
-  }
+  Future<CondoModel?> findOne(int id) async => await _condoDAO.findOne(id);
 
   @override
-  bool save(CondoModel value) {
-      _fakeDB.add(value);
-    return true;
-  }
-  
-  @override
-  bool deleteAll() {
-    _fakeDB.clear();
-    return true;
+  Future<bool> save(CondoModel value) async {
+    if (value.id != null) {
+      return _condoDAO.update(value);
+    } else {
+      return _condoDAO.create(value);
+    }
   }
 }

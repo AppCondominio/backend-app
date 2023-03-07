@@ -35,7 +35,7 @@ class RegisterResidentApi extends Api {
     router.get('/get/residents', (Request req) async {
       String? id = req.url.queryParameters['idCondo'];
 
-      List<ResidentModel> registers = _service.findAll();
+      List<ResidentModel> registers = await _service.findAll();
       List<Map> registerMap = registers.map((e) => e.toJson()).toList();
       var result =
           registerMap.where((e) => e['idCondo'] == int.parse(id!)).toList();
@@ -58,7 +58,7 @@ class RegisterResidentApi extends Api {
       if (id == null) {
         return Response.notFound("nao achei o id");
       }
-      ResidentModel resident = _service.findOne(int.parse(id));
+      ResidentModel? resident = await _service.findOne(int.parse(id));
       return Response.ok(jsonEncode(resident));
     });
 

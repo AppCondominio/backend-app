@@ -36,7 +36,7 @@ class CooperatorApi extends Api {
     router.get('/get/cooperator', (Request req) async {
       String? id = req.url.queryParameters['idCondo'];
 
-      List<CooperatorModel> cooperators = _service.findAll();
+      List<CooperatorModel> cooperators = await _service.findAll();
       List<Map> cooperatorMap = cooperators.map((e) => e.toJson()).toList();
 
       if (id != null) {
@@ -58,13 +58,13 @@ class CooperatorApi extends Api {
       int id = int.parse(req.url.queryParameters['id']!);
       var result = await req.readAsString();
       var body = jsonDecode(result);
-      CooperatorModel cooperator = _service.findOne(id);
+      CooperatorModel? cooperator = await _service.findOne(id);
       Map map = {
         'id': id,
-        'name': body['name'] ?? cooperator.name,
-        'documentNumber': body['documentNumber'] ?? cooperator.documentNumber,
-        'role': body['role'] ?? cooperator.role,
-        'dtCreated': cooperator.dtCreated,
+        'name': body['name'] ?? cooperator!.name,
+        'documentNumber': body['documentNumber'] ?? cooperator!.documentNumber,
+        'role': body['role'] ?? cooperator!.role,
+        'dtCreated': cooperator!.dtCreated,
         'dtUpdated': DateTime.now(),
       };
       _service.delete(id);

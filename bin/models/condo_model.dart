@@ -1,90 +1,97 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
-import 'dart:math';
+
+// Retirei a senha do model
 
 import 'package:intl/intl.dart';
 
 class CondoModel {
-  final int? id;
-  final String condoName;
-  final String documentNumber;
-  final String? password;
-  final String email;
-  final String zipCode;
-  final String numberAddress;
-  final String? optionalAddress;
-  //final String imageUrl;
-  final String dtCreated;
-  final String? dtUpdated;
-  final String? status;
-  // Apenas para testes
-  final String plan;
-  final bool isSet;
+  int? id;
+  String? name;
+  String? document;
+  String? password;
+  String? email;
+  String? zipCode;
+  String? addressNumber;
+  String? optAddress;
+  String? dtCreated;
+  String? dtUpdated;
+  String? status;
 
-  CondoModel(
-      this.id,
-      this.condoName,
-      this.documentNumber,
-      this.password,
-      this.email,
-      this.zipCode,
-      this.numberAddress,
-      this.optionalAddress,
-      this.dtCreated,
-      this.dtUpdated,
-      this.status,
-      this.plan,
-      this.isSet);
+  CondoModel();
+
+  CondoModel.create(this.id, this.name, this.document, this.email, this.zipCode, this.addressNumber, this.optAddress,
+      this.dtCreated, this.dtUpdated, this.status);
+
+  factory CondoModel.fromMap(Map<String, dynamic> map) {
+    return CondoModel.create(
+      int.parse(map['id']),
+      map['name'],
+      map['document'],
+      map['email'],
+      map['zipCode'],
+      map['addressNumber'],
+      map['optAddress'] ?? '',
+      map['dtCreated'],
+      map['dtUpdated'] ?? '',
+      map['status'] ?? 'A',
+    );
+  }
+
+  factory CondoModel.fromRequest(Map map) {
+    return CondoModel()
+      ..name = map['name']
+      ..document = map['document']
+      ..password = map['password']
+      ..email = map['email']
+      ..zipCode = map['zipCode']
+      ..addressNumber = map['addressNumber']
+      ..optAddress = map['optAddress'];
+  }
 
   factory CondoModel.fromJson(Map map) {
-    return CondoModel(
+    return CondoModel.create(
         map['id'] ?? '',
-        map['condoName'],
-        map['documentNumber'],
-        map['password'] ?? "1",//Random().nextInt(50).toString(),
+        map['name'],
+        map['document'],
         map['email'],
         map['zipCode'],
-        map['numberAddress'],
-        map['optionalAddress'] ?? '',
+        map['addressNumber'],
+        map['optAddress'] ?? '',
         map['dtCreated'] ?? DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime.now()),
-        map['dtUpdated'] != null
-            ? DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime.now())
-            : null,
-        map['status'] ?? 'A',
-        map['plan'],
-        map['isSet'] ?? false);
+        map['dtUpdated'] != null ? DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime.now()) : null,
+        map['status'] ?? 'A',);
   }
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
       'id': id,
-      'condoName': condoName,
-      'documentNumber': documentNumber,
-      'password': password,
+      'name': name,
+      'document': document,
       'email': email,
       'zipCode': zipCode,
-      'numberAddress': numberAddress,
-      'optionalAddress': optionalAddress,
+      'addressNumber': addressNumber,
+      'optAddress': optAddress,
       'dtCreated': dtCreated,
       'dtUpdated': dtUpdated,
       'status': status,
-      'plan': plan,
-      'isSet': isSet
     };
   }
 
   Map toJson() => {
         'id': id,
-        'condoName': condoName,
-        'documentNumber': documentNumber,
-        'password': password,
+        'name': name,
+        'document': document,
         'email': email,
         'zipCode': zipCode,
-        'numberAddress': numberAddress,
-        'optionalAddress': optionalAddress,
+        'addressNumber': addressNumber,
+        'optAddress': optAddress,
         'dtCreated': dtCreated,
         'dtUpdated': dtUpdated,
         'status': status,
-        'plan': plan,
-        'isSet': isSet
       };
+
+  @override
+  String toString() {
+    return 'CondoModel(id: $id, name: $name, document: $document, email: $email, zipCode: $zipCode, addressNumber: $addressNumber, optAddress: $optAddress, dtCreated: $dtCreated, dtUpdated: $dtUpdated, status: $status)';
+  }
 }

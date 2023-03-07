@@ -6,30 +6,24 @@ class RegisterUserService implements GenericService<UserModel> {
   final List<UserModel> _fakeDB = [];
 
   @override
-  bool delete(int id) {
+  Future<bool> delete(int id) async {
     _fakeDB.removeWhere((e) => e.id == id);
     return true;
   }
 
   @override
-  List<UserModel> findAll() {
+  Future<List<UserModel>> findAll() async {
     return _fakeDB;
   }
 
   @override
-  UserModel findOne(int id) {
+  Future<UserModel?> findOne(int id) async {
     return _fakeDB.firstWhere((e) => e.id == id);
   }
 
   @override
-  bool save(UserModel value) {
+  Future<bool> save(UserModel value) async {
       _fakeDB.add(value);
-    return true;
-  }
-  
-  @override
-  bool deleteAll() {
-    _fakeDB.clear();
     return true;
   }
 }

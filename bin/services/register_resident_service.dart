@@ -5,36 +5,24 @@ class RegisterResidentService implements GenericService<ResidentModel> {
   final List<ResidentModel> _fakeDB = [];
 
   @override
-  bool delete(int id) {
+  Future<bool> delete(int id) async {
     _fakeDB.removeWhere((e) => e.id == id);
     return true;
   }
 
   @override
-  List<ResidentModel> findAll() {
+  Future<List<ResidentModel>> findAll() async {
     return _fakeDB;
   }
 
   @override
-  ResidentModel findOne(int id) {
+  Future<ResidentModel?> findOne(int id) async {
     return _fakeDB.firstWhere((e) => e.id == id);
   }
 
   @override
-  bool save(ResidentModel value) {
+  Future<bool> save(ResidentModel value) async {
     _fakeDB.add(value);
-    return true;
-  }
-
-  @override
-  bool update(int id) {
-    _fakeDB.firstWhere((e) => e.id == id);
-    return true;
-  }
-  
-  @override
-  bool deleteAll() {
-    _fakeDB.clear();
     return true;
   }
 }

@@ -42,20 +42,20 @@ class CondoApi extends Api {
       if (id == null) {
         return Response.notFound("Not found the id -> $id");
       }
-      CondoSettingsModel settings = _service.findOne(int.parse(id));
+      CondoSettingsModel? settings =await _service.findOne(int.parse(id));
       return Response.ok(jsonEncode(settings));
     });
 
     // Editar configuracoes
     router.put('/edit/condo/settings', (Request req) async {
       int id = int.parse(req.url.queryParameters['idCondo']!);
-      CondoSettingsModel settings = _service.findOne(id);
+      CondoSettingsModel? settings = await _service.findOne(id);
 
       var result = await req.readAsString();
       var body = jsonDecode(result);
 
       Map map = {
-        'id': settings.id,
+        'id': settings!.id,
         'towers': body['towers'] ?? settings.towers,
         'recreationArea': body['recreationArea'] ?? settings.recreationArea,
         'cooperator': body['cooperator'] ?? settings.cooperator,

@@ -42,7 +42,7 @@ class WarningApi extends Api {
     router.get('/get/all/warning', (Request req) async {
       String? id = req.url.queryParameters['idCondo'];
 
-      List<WarningModel> warnings = _service.findAll();
+      List<WarningModel> warnings = await _service.findAll();
       List<Map> warningsMap = warnings.map((e) => e.toJson()).toList();
 
       if (id != null) {

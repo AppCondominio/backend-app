@@ -15,30 +15,17 @@ class RegisterCondoApi extends Api {
   @override
   Handler getHandler({List<Middleware>? middlewares, bool isSecurity = false}) {
     Router router = Router();
-    int id = 0;
+
     router.post('/register/condo', (Request req) async {
-      id++;
-      var result = await req.readAsString();
-      var body = jsonDecode(result);
-
-      Map map = {
-        "id": id,
-        "condoName": body['condoName'],
-        'documentNumber': body['documentNumber'],
-        'email': body['email'],
-        'zipCode': body['zipCode'],
-        'numberAddress': body['numberAddress'],
-        'optionalAddress': body['optionalAddress'],
-        'plan': body['plan'],
-        'isSet': body['isSet']
-      };
-
-      _service.save(CondoModel.fromJson(map));
-      return Response(201, body: "Condo Save Successful");
+      var body = await req.readAsString();
+      if (body.isEmpty) return Response(400);
+      var condo = CondoModel.fromRequest(jsonDecode(body));
+      var result = await _service.save(condo);
+      return result ? Response(201) : Response(500);
     });
 
     router.get('/get/condo', (Request req) async {
-      List<CondoModel> registers = _service.findAll();
+      List<CondoModel> registers = await _service.findAll();
       List<Map> registerMap = registers.map((e) => e.toJson()).toList();
       return Response.ok(jsonEncode(registerMap));
     });
@@ -48,7 +35,7 @@ class RegisterCondoApi extends Api {
       if (id == null) {
         return Response.notFound("nao achei o id");
       }
-      CondoModel user = _service.findOne(int.parse(id));
+      CondoModel? user = await _service.findOne(int.parse(id));
       return Response.ok(jsonEncode(user));
     });
 
@@ -56,20 +43,17 @@ class RegisterCondoApi extends Api {
       int id = int.parse(req.url.queryParameters['id']!);
       var result = await req.readAsString();
       var body = jsonDecode(result);
-      CondoModel condo = _service.findOne(id);
+      CondoModel? condo = await _service.findOne(id);
       Map map = {
         "id": id,
-        "condoName": condo.condoName,
-        'documentNumber': condo.documentNumber,
-        'password': condo.password,
+        "name": condo!.name,
+        'document': condo.document,
         'email': condo.email,
         'zipCode': condo.zipCode,
-        'numberAddress': condo.numberAddress,
-        'optionalAddress': condo.optionalAddress,
+        'addressNumber': condo.addressNumber,
+        'optAddress': condo.optAddress,
         'dtCreated': condo.dtCreated,
         'dtUpdated': DateTime.now(),
-        'plan': condo.plan,
-        'isSet': body['isSet']
       };
       _service.delete(id);
       _service.save(CondoModel.fromJson(map));
