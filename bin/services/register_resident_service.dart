@@ -1,28 +1,28 @@
+import '../dao/resident_dao.dart';
 import '../models/resident_model.dart';
 import 'generic_service.dart';
 
 class RegisterResidentService implements GenericService<ResidentModel> {
-  final List<ResidentModel> _fakeDB = [];
+  final ResidentDAO _residentDAO;
+  RegisterResidentService(this._residentDAO);
 
   @override
-  Future<bool> delete(int id) async {
-    _fakeDB.removeWhere((e) => e.id == id);
-    return true;
-  }
+  Future<bool> delete(int id) async => await _residentDAO.delete(id);
 
   @override
-  Future<List<ResidentModel>> findAll() async {
-    return _fakeDB;
-  }
+  Future<List<ResidentModel>> findAll() async => await _residentDAO.findAll();
 
   @override
-  Future<ResidentModel?> findOne(int id) async {
-    return _fakeDB.firstWhere((e) => e.id == id);
-  }
+  Future<ResidentModel?> findOne(int id) async => await _residentDAO.findOne(id);
 
   @override
   Future<bool> save(ResidentModel value) async {
-    _fakeDB.add(value);
-    return true;
+    if (value.id != null) {
+      return await _residentDAO.update(value);
+    } else {
+      return await _residentDAO.create(value);
+    }
   }
+
+  Future<List<ResidentModel>> findAllByCondo(int idCondo) async => await _residentDAO.findAllByCondo(idCondo);
 }

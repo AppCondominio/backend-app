@@ -17,3 +17,4 @@ dependencies:
 
   commons_core:
     path: ./packages/commons/commons-core
+  password_dart: ^2.0.1

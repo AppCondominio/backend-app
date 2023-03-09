@@ -15,12 +15,20 @@ class MySqlDBConfiguration implements DBConfiguration {
 
   @override
   Future<MySQLConnection> createConection() async {
-    return await MySQLConnection.createConnection(
+    final conn = await MySQLConnection.createConnection(
       host: await CustomEnv.get<String>(key: 'db_host'),
       port: await CustomEnv.get<int>(key: 'db_port'),
       userName: await CustomEnv.get<String>(key: 'db_user'),
       password: await CustomEnv.get<String>(key: 'db_pass'),
       databaseName: await CustomEnv.get<String>(key: 'db_schema'),
     );
+    await conn.connect();
+    return conn;
+  }
+  
+  @override
+  execQuery(String sql, [Map<String, dynamic>? params]) async {
+    var conn = await connection;
+    return await conn.execute(sql, params);
   }
 }

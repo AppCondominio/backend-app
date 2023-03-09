@@ -1,49 +1,36 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
-import 'package:intl/intl.dart';
+import 'dart:convert';
 
 class RecreationModel {
-  final int? id;
-  final String name;
-  final double? price;
-  final Map availability;
-  final String dtCreated;
-  final String? dtUpdated;
-  final String? status;
+  int? id;
+  String? name;
+  double? price;
+  Map<String, dynamic>? availability;
+  String? dtCreated;
+  String? dtUpdated;
+  String? status;
+  int? idSettingCondo;
 
-  RecreationModel(
-    this.id,
-    this.name,
-    this.price,
-    this.availability,
-    this.dtCreated,
-    this.dtUpdated,
-    this.status,
-  );
+  RecreationModel();
 
-  factory RecreationModel.fromJson(Map map) {
-    return RecreationModel(
-        map['id'] ?? '',
-        map['name'],
-        map['price'] ?? 0.00,
-        map['availability'],
-        map['dtCreated'] ??
-            DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime.now()),
-        map['dtUpdated'] != null
-            ? DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime.now())
-            : null,
-        map['status'] ?? 'A');
+  factory RecreationModel.fromMap(Map map) {
+    return RecreationModel()
+      ..id = int.parse(map['id'])
+      ..name = map['name']
+      ..price = double.parse(map['price'])
+      ..availability = jsonDecode(map['availability'])
+      ..dtCreated = map['dtCreated']
+      ..dtUpdated = map['dtUpdated']
+      ..status = map['status']
+      ..idSettingCondo = int.parse(map['idSettingCondo']);
   }
 
-  Map<String, dynamic> toMap() {
-    return <String, dynamic>{
-      'id': id,
-      'name': name,
-      'price': price,
-      'availability': availability,
-      'dtCreated': dtCreated,
-      'dtUpdated': dtUpdated,
-      'status': status,
-    };
+  factory RecreationModel.fromRequest(Map map) {
+    return RecreationModel()
+      ..id = map['id']
+      ..name = map['name']
+      ..price = map['price']
+      ..availability = map['availability']
+      ..idSettingCondo = map['idSettingCondo'];
   }
 
   Map toJson() => {
@@ -54,6 +41,7 @@ class RecreationModel {
         'dtCreated': dtCreated,
         'dtUpdated': dtUpdated,
         'status': status,
+        'idSettingCondo': idSettingCondo
       };
 
   @override

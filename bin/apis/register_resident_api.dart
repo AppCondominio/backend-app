@@ -5,61 +5,52 @@ import 'package:shelf/shelf.dart';
 import 'package:shelf_router/shelf_router.dart';
 
 import '../models/resident_model.dart';
-import '../services/generic_service.dart';
+
+import '../services/register_resident_service.dart';
 import 'api.dart';
 
 class RegisterResidentApi extends Api {
-  final GenericService<ResidentModel> _service;
-
+  final RegisterResidentService _service;
   RegisterResidentApi(this._service);
+
   @override
   Handler getHandler({List<Middleware>? middlewares, bool isSecurity = false}) {
     Router router = Router();
-    int id = 0;
 
-    router.post('/register/resident', (Request req) async {
-      id++;
-      var result = await req.readAsString();
-      var body = jsonDecode(result);
-      Map map = {
-        'id': id,
-        'room': body['room'],
-        'optionalRoom': body['optionalRoom'],
-        'idUser': body['idUser'],
-        'idCondo': body['idCondo']
-      };
-      _service.save(ResidentModel.fromJson(map));
-      return Response.ok("Morador Salvo!");
+    router.post('/resident', (Request req) async {
+      var body = await req.readAsString();
+      var result = await _service.save(ResidentModel.fromRequest(jsonDecode(body)));
+      return result ? Response(201) : Response(500);
     });
 
-    router.get('/get/residents', (Request req) async {
-      String? id = req.url.queryParameters['idCondo'];
-
-      List<ResidentModel> registers = await _service.findAll();
-      List<Map> registerMap = registers.map((e) => e.toJson()).toList();
-      var result =
-          registerMap.where((e) => e['idCondo'] == int.parse(id!)).toList();
-      result.sort(
-          ((a, b) => int.parse(a['room']).compareTo(int.parse(b['room']))));
-      return Response.ok(jsonEncode(result));
+    router.get('/resident/all', (Request req) async {
+      String? idCondo = req.url.queryParameters['idCondo'];
+      if (idCondo == null) return Response(400);
+      List<ResidentModel> residents = await _service.findAllByCondo(int.parse(idCondo));
+      List<Map> residentsMap = residents.map((e) => e.toJson()).toList();
+      return Response.ok(jsonEncode(residentsMap));
     });
 
-    router.delete('/delete/resident', (Request req) async {
+    router.get('/resident', (Request req) async {
       String? id = req.url.queryParameters['id'];
-      if (id == null) {
-        return Response.notFound("nao achei o id");
-      }
-      _service.delete(int.parse(id));
-      return Response.ok("Morador deletado");
+      if (id == null) return Response(400);
+      var residents = await _service.findOne(int.parse(id));
+      if (residents == null) return Response(404);
+      return Response.ok(jsonEncode(residents.toJson()));
     });
 
-    router.get('/get/resident', (Request req) async {
+    router.delete('/resident', (Request req) async {
       String? id = req.url.queryParameters['id'];
-      if (id == null) {
-        return Response.notFound("nao achei o id");
-      }
-      ResidentModel? resident = await _service.findOne(int.parse(id));
-      return Response.ok(jsonEncode(resident));
+      if (id == null) return Response(400);
+      var result = await _service.delete(int.parse(id));
+      return result ? Response(200) : Response(500);
+    });
+
+    router.put('/resident', (Request req) async {
+      var body = await req.readAsString();
+      if (body.isEmpty) return Response(400);
+      var result = await _service.save(ResidentModel.fromRequest(jsonDecode(body)));
+      return result ? Response(200) : Response(500);
     });
 
     return createHandler(

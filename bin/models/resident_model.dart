@@ -1,45 +1,47 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 class ResidentModel {
-  final int? id;
-  final String room;
-  final String? optionalRoom;
-  //apenas para testes
-  final String idUser;
-  final int idCondo;
+  int? id;
+  String? apartament;
+  String? optApartament;
+  bool? isRental;
+  int? idUser;
+  int? idCondo;
 
-  ResidentModel(
-    this.id,
-    this.room,
-    this.optionalRoom,
-    this.idUser,
-    this.idCondo,
-  );
+  ResidentModel();
 
   @override
   String toString() {
-    return 'ResidentModel(id: $id, room: $room, optionalRoom: $optionalRoom, idUser: $idUser, idCondo: $idCondo)';
+    return 'ResidentModel(id: $id, apartament: $apartament, optApartament: $optApartament, isRental: $isRental, idUser: $idUser, idCondo: $idCondo)';
   }
 
-  factory ResidentModel.fromJson(Map map) {
-    return ResidentModel(map['id'] ?? '', map['room'],
-        map['optionalRoom'] ?? '', map['idUser'], map['idCondo']);
+  factory ResidentModel.fromMap(Map map) {
+    return ResidentModel()
+      ..id = int.parse(map['id'])
+      ..apartament = map['apartament']
+      ..optApartament = map['optApartament']
+      ..isRental = map['isRental'] == "1" ? true : false
+      ..idUser = int.parse(map['idUser'])
+      ..idCondo = int.parse(map['idCondo']);
   }
 
-  Map<String, dynamic> toMap() {
-    return <String, dynamic>{
+  factory ResidentModel.fromRequest(Map map) {
+    return ResidentModel()
+      ..id = map['id']
+      ..apartament = map['apartament']
+      ..optApartament = map['optApartament']
+      ..isRental = map['isRental']
+      ..idUser = map['idUser']
+      ..idCondo = map['idCondo'];
+  }
+
+  Map toJson() {
+    return {
       'id': id,
-      'room': room,
-      'optionalRoom': optionalRoom,
+      'apartament': apartament,
+      'optApartament': optApartament,
+      'isRental': isRental,
       'idUser': idUser,
       'idCondo': idCondo
     };
   }
-
-  Map toJson() => {
-        'id': id,
-        'room': room,
-        'optionalRoom': optionalRoom,
-        'idUser': idUser,
-        'idCondo': idCondo,
-      };
 }

@@ -16,7 +16,7 @@ class RegisterCondoApi extends Api {
   Handler getHandler({List<Middleware>? middlewares, bool isSecurity = false}) {
     Router router = Router();
 
-    router.post('/register/condo', (Request req) async {
+    router.post('/condo', (Request req) async {
       var body = await req.readAsString();
       if (body.isEmpty) return Response(400);
       var condo = CondoModel.fromRequest(jsonDecode(body));
@@ -24,40 +24,32 @@ class RegisterCondoApi extends Api {
       return result ? Response(201) : Response(500);
     });
 
-    router.get('/get/condo', (Request req) async {
+    router.get('/condo/all', (Request req) async {
       List<CondoModel> registers = await _service.findAll();
       List<Map> registerMap = registers.map((e) => e.toJson()).toList();
       return Response.ok(jsonEncode(registerMap));
     });
 
-    router.get('/get/condo', (Request req) async {
+    router.get('/condo', (Request req) async {
       String? id = req.url.queryParameters['id'];
-      if (id == null) {
-        return Response.notFound("nao achei o id");
-      }
-      CondoModel? user = await _service.findOne(int.parse(id));
-      return Response.ok(jsonEncode(user));
+      if (id == null) return Response(400);
+      var condo = await _service.findOne(int.parse(id));
+      if (condo == null) return Response(404);
+      return Response.ok(jsonEncode(condo.toJson()));
     });
 
-    router.put('/edit/condo', (Request req) async {
-      int id = int.parse(req.url.queryParameters['id']!);
-      var result = await req.readAsString();
-      var body = jsonDecode(result);
-      CondoModel? condo = await _service.findOne(id);
-      Map map = {
-        "id": id,
-        "name": condo!.name,
-        'document': condo.document,
-        'email': condo.email,
-        'zipCode': condo.zipCode,
-        'addressNumber': condo.addressNumber,
-        'optAddress': condo.optAddress,
-        'dtCreated': condo.dtCreated,
-        'dtUpdated': DateTime.now(),
-      };
-      _service.delete(id);
-      _service.save(CondoModel.fromJson(map));
-      return Response.ok("Editado.");
+    router.put('/condo', (Request req) async {
+      var body = await req.readAsString();
+      if (body.isEmpty) return Response(400);
+      var result = await _service.save(CondoModel.fromRequest(jsonDecode(body)));
+      return result ? Response(200) : Response(500);
+    });
+
+    router.delete('/condo', (Request req) async {
+      String? id = req.url.queryParameters['id'];
+      if (id == null) return Response(400);
+      var result = await _service.delete(int.parse(id));
+      return result ? Response(200) : Response(500);
     });
 
     return createHandler(

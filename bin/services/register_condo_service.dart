@@ -1,3 +1,5 @@
+import 'package:password_dart/password_dart.dart';
+
 import '../dao/condo_dao.dart';
 import '../models/condo_model.dart';
 import 'generic_service.dart';
@@ -18,9 +20,15 @@ class RegisterCondoService implements GenericService<CondoModel> {
   @override
   Future<bool> save(CondoModel value) async {
     if (value.id != null) {
-      return _condoDAO.update(value);
+      final hash = Password.hash(value.password!, PBKDF2());
+      value.password = hash;
+      return await _condoDAO.update(value);
     } else {
-      return _condoDAO.create(value);
+      final hash = Password.hash(value.password!, PBKDF2());
+      value.password = hash;
+      return await _condoDAO.create(value);
     }
   }
+
+  Future<CondoModel?> findByDocument(String document) async => await _condoDAO.findByDocument(document);
 }

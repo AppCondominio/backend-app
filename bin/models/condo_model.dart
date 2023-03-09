@@ -37,8 +37,15 @@ class CondoModel {
     );
   }
 
+  factory CondoModel.fromDocument(Map map) {
+    return CondoModel()
+      ..id = int.parse(map['id'])
+      ..password = map['password'];
+  }
+
   factory CondoModel.fromRequest(Map map) {
     return CondoModel()
+      ..id = map['id']
       ..name = map['name']
       ..document = map['document']
       ..password = map['password']
@@ -50,16 +57,17 @@ class CondoModel {
 
   factory CondoModel.fromJson(Map map) {
     return CondoModel.create(
-        map['id'] ?? '',
-        map['name'],
-        map['document'],
-        map['email'],
-        map['zipCode'],
-        map['addressNumber'],
-        map['optAddress'] ?? '',
-        map['dtCreated'] ?? DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime.now()),
-        map['dtUpdated'] != null ? DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime.now()) : null,
-        map['status'] ?? 'A',);
+      map['id'] ?? '',
+      map['name'],
+      map['document'],
+      map['email'],
+      map['zipCode'],
+      map['addressNumber'],
+      map['optAddress'] ?? '',
+      map['dtCreated'] ?? DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime.now()),
+      map['dtUpdated'] != null ? DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime.now()) : null,
+      map['status'] ?? 'A',
+    );
   }
 
   Map<String, dynamic> toMap() {

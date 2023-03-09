@@ -1,29 +1,36 @@
 import 'package:commons_core/commons_core.dart';
 
-import '../apis/condo_api.dart';
+import '../apis/condo_settings_api.dart';
 import '../apis/cooperator_api.dart';
 import '../apis/login_api.dart';
 import '../apis/recreation_api.dart';
 import '../apis/register_condo_api.dart';
 import '../apis/register_resident_api.dart';
 import '../apis/register_user_api.dart';
-import '../apis/warning_api.dart';
+import '../apis/tower_settings_api.dart';
+import '../apis/notice_api.dart';
 import '../dao/condo_dao.dart';
+import '../dao/cooperator_settings_dao.dart';
+import '../dao/notice_dao.dart';
+import '../dao/recreation_settings_dao.dart';
+import '../dao/resident_dao.dart';
+import '../dao/settings_condo_dao.dart';
+import '../dao/tower_settings_dao.dart';
+import '../dao/user_dao.dart';
 import '../models/condo_model.dart';
-import '../models/condo_settings_model.dart';
 import '../models/cooperator_model.dart';
-import '../models/recreation_model.dart';
-import '../models/resident_model.dart';
 import '../models/user_model.dart';
-import '../models/warning_model.dart';
+import '../models/notice_model.dart';
 import '../services/condo_settings_service.dart';
 import '../services/cooperator_service.dart';
 import '../services/generic_service.dart';
+import '../services/login_service.dart';
 import '../services/recreation_service.dart';
 import '../services/register_condo_service.dart';
 import '../services/register_resident_service.dart';
 import '../services/register_user_service.dart';
-import '../services/warning_service.dart';
+import '../services/tower_settings_service.dart';
+import '../services/notice_service.dart';
 import 'database/db_configuration.dart';
 import 'database/mysql_db_configuration.dart';
 import 'security/security_service.dart';
@@ -37,29 +44,49 @@ class Injects {
 
     di.register<SecurityService>(() => SecurityServiceImp());
 
-    di.register<GenericService<UserModel>>(() => RegisterUserService());
-    di.register<RegisterUserApi>(() => RegisterUserApi(di.get(), di.get()));
-
+    // Condiminio
     di.register<CondoDAO>(() => CondoDAO(di<DBConfiguration>()));
     di.register<GenericService<CondoModel>>(() => RegisterCondoService(di<CondoDAO>()));
     di.register<RegisterCondoApi>(() => RegisterCondoApi(di<GenericService<CondoModel>>()));
 
-    di.register<GenericService<ResidentModel>>(() => RegisterResidentService());
-    di.register<RegisterResidentApi>(() => RegisterResidentApi(di.get()));
+    // Usuario
+    di.register<UserDAO>(() => UserDAO(di<DBConfiguration>()));
+    di.register<GenericService<UserModel>>(() => RegisterUserService(di<UserDAO>()));
+    di.register<RegisterUserApi>(() => RegisterUserApi(di<GenericService<UserModel>>()));
 
-    di.register<GenericService<CondoSettingsModel>>(() => CondoSettingsService());
-    di.register<CondoApi>(() => CondoApi(di.get()));
+    // Login
+    di.register<LoginService>(() => LoginService(di<GenericService<CondoModel>>(), di<GenericService<UserModel>>()));
+    di.register<LoginApi>(() => LoginApi(di<SecurityService>(), di<LoginService>()));
 
-    di.register<GenericService<RecreationModel>>(() => RecreationService());
-    di.register<RecreationApi>(() => RecreationApi(di.get()));
+    // Residentes
+    di.register<ResidentDAO>(() => ResidentDAO(di<DBConfiguration>()));
+    di.register<RegisterResidentService>(() => RegisterResidentService(di<ResidentDAO>()));
+    di.register<RegisterResidentApi>(() => RegisterResidentApi(di<RegisterResidentService>()));
 
-    di.register<GenericService<CooperatorModel>>(() => CooperatorService());
-    di.register<CooperatorApi>(() => CooperatorApi(di.get()));
+    // Configuracoes Condominio
+    di.register<SettingsCondoDAO>(() => SettingsCondoDAO(di<DBConfiguration>()));
+    di.register<CondoSettingsService>(() => CondoSettingsService(di<SettingsCondoDAO>()));
+    di.register<CondoSettingsApi>(() => CondoSettingsApi(di<CondoSettingsService>()));
 
-    di.register<LoginApi>(() => LoginApi(di.get(), di.get(), di.get()));
+    // Configuracoes Condominio (Torres/Blocos)
+    di.register<TowerSettingDAO>(() => TowerSettingDAO(di<DBConfiguration>()));
+    di.register<TowerSettingService>(() => TowerSettingService(di<TowerSettingDAO>()));
+    di.register<TowerSettingsApi>(() => TowerSettingsApi(di<TowerSettingService>()));
 
-    di.register<GenericService<WarningModel>>(() => WarningService());
-    di.register<WarningApi>(() => WarningApi(di.get()));
+    // Configuracoes Condominio (Area de lazer)
+    di.register<RecreationSettingDAO>(() => RecreationSettingDAO(di<DBConfiguration>()));
+    di.register<RecreationService>(() => RecreationService(di<RecreationSettingDAO>()));
+    di.register<RecreationApi>(() => RecreationApi(di<RecreationService>()));
+
+    // Configuracoes Condominio (Colaboradores)
+    di.register<CooperatorSettingsDAO>(() => CooperatorSettingsDAO(di<DBConfiguration>()));
+    di.register<CooperatorService>(() => CooperatorService(di<CooperatorSettingsDAO>()));
+    di.register<CooperatorApi>(() => CooperatorApi(di<CooperatorService>()));
+
+    // Avisos
+    di.register<NoticeDAO>(() => NoticeDAO(di<DBConfiguration>()));
+    di.register<NoticeService>(() => NoticeService(di<NoticeDAO>()));
+    di.register<NoticeApi>(() => NoticeApi(di<NoticeService>()));
 
     return di;
   }

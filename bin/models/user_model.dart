@@ -1,92 +1,59 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 class UserModel {
-  final int? id;
-  final String name;
-  final String lastName;
-  final String documentNumber;
-  final String email;
-  final String? renter;
-  final String? password;
-  final DateTime dtCreated;
-  final DateTime? dtUpdated;
-  final String? status;
-  final String? deviceToken;
-  final String? jwtToken;
-  final List? idCondo;
+  int? id;
+  String? name;
+  String? lastName;
+  String? document;
+  String? password;
+  String? email;
+  String? phone;
+  String? dtCreated;
+  String? dtUpdated;
+  String? deviceToken;
+  String? status;
 
-  UserModel(
-    this.id,
-    this.name,
-    this.lastName,
-    this.documentNumber,
-    this.email,
-    this.renter,
-    this.password,
-    this.dtCreated,
-    this.dtUpdated,
-    this.status,
-    this.deviceToken,
-    this.jwtToken,
-    this.idCondo,
-  );
+  UserModel();
 
-  @override
-  String toString() {
-    return 'UserModel(id: $id, name: $name, lastName: $lastName, documentNumber: $documentNumber, email: $email, renter: $renter, password: $password, dtCreated: $dtCreated, dtUpdated: $dtUpdated, status: $status, deviceToken: $deviceToken, jwtToken: $jwtToken, idCondo: $idCondo)';
+  factory UserModel.fromMap(Map map) {
+    return UserModel()
+      ..id = int.parse(map['id'])
+      ..name = map['name']
+      ..lastName = map['lastName']
+      ..document = map['document']
+      ..email = map['email']
+      ..phone = map['phone']
+      ..dtCreated = map['dtCreated']
+      ..dtUpdated = map['dtUpdated']
+      ..status = map['status'];
   }
 
-  factory UserModel.fromJson(Map map) {
-    return UserModel(
-        map['id'] ?? '',
-        map['name'],
-        map['lastName'],
-        map['documentNumber'],
-        map['email'],
-        map['renter'],
-        map['password'] ??
-            map['name'].toString() +
-                map['documentNumber'].toString().substring(0, 3),
-        DateTime.now(),
-        map['dtUpdated'] != null
-            ? DateTime.fromMicrosecondsSinceEpoch(map['dtUpdated'])
-            : null,
-        map['status'] ?? 'A',
-        map['deviceToken'] ?? '',
-        map['jwtToken'] ?? '',
-        map['idCondo']);
+  factory UserModel.fromRequest(Map map) {
+    return UserModel()
+      ..name = map['name']
+      ..lastName = map['lastName']
+      ..document = map['document']
+      ..email = map['email']
+      ..phone = map['phone'];
   }
 
-  Map<String, dynamic> toMap() {
-    return <String, dynamic>{
+  factory UserModel.fromDocument(Map map) {
+    return UserModel()
+      ..id = int.parse(map['id'])
+      ..password = map['password'];
+  }
+
+  Map toJson() {
+    return {
       'id': id,
       'name': name,
       'lastName': lastName,
-      'documentNumber': documentNumber,
       'email': email,
-      'renter': renter,
-      'password': password,
-      'dtCreated': dtCreated.millisecondsSinceEpoch,
-      'dtUpdated': dtUpdated?.millisecondsSinceEpoch,
-      'status': status,
-      'deviceToken': deviceToken,
-      'jwtToken': jwtToken,
-      'idCondo': idCondo
+      'phone': phone,
     };
   }
 
-  Map toJson() => {
-        'id': id,
-        'name': name,
-        'lastName': lastName,
-        'documentNumber': documentNumber,
-        'email': email,
-        'renter': renter,
-        'password': password,
-        'dtCreated': dtCreated.millisecondsSinceEpoch,
-        'dtUpdated': dtUpdated?.millisecondsSinceEpoch,
-        'status': status,
-        'deviceToken': deviceToken,
-        'jwtToken': jwtToken,
-        'idCondo': idCondo
-      };
+  @override
+  String toString() {
+    return 'UserModel(id: $id, name: $name, lastName: $lastName, document: $document, phone: $phone, email: $email, password: $password, dtCreated: $dtCreated, dtUpdated: $dtUpdated, deviceToken: $deviceToken, status: $status)';
+  }
 }
