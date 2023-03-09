@@ -1,5 +1,6 @@
 import 'package:shelf/shelf.dart';
 
+import 'apis/complaint_api.dart';
 import 'apis/condo_settings_api.dart';
 import 'apis/cooperator_api.dart';
 import 'apis/login_api.dart';
@@ -28,6 +29,7 @@ void main() async {
       .add(_di.get<RecreationApi>().getHandler())
       .add(_di.get<CooperatorApi>().getHandler())
       .add(_di.get<NoticeApi>().getHandler())
+      .add(_di.get<ComplaintApi>().getHandler())
       .handler;
 
   var handler = Pipeline()

@@ -1,5 +1,6 @@
 import 'package:commons_core/commons_core.dart';
 
+import '../apis/complaint_api.dart';
 import '../apis/condo_settings_api.dart';
 import '../apis/cooperator_api.dart';
 import '../apis/login_api.dart';
@@ -9,6 +10,7 @@ import '../apis/register_resident_api.dart';
 import '../apis/register_user_api.dart';
 import '../apis/tower_settings_api.dart';
 import '../apis/notice_api.dart';
+import '../dao/complaint_dao.dart';
 import '../dao/condo_dao.dart';
 import '../dao/cooperator_settings_dao.dart';
 import '../dao/notice_dao.dart';
@@ -21,6 +23,7 @@ import '../models/condo_model.dart';
 import '../models/cooperator_model.dart';
 import '../models/user_model.dart';
 import '../models/notice_model.dart';
+import '../services/complaint_service.dart';
 import '../services/condo_settings_service.dart';
 import '../services/cooperator_service.dart';
 import '../services/generic_service.dart';
@@ -87,6 +90,11 @@ class Injects {
     di.register<NoticeDAO>(() => NoticeDAO(di<DBConfiguration>()));
     di.register<NoticeService>(() => NoticeService(di<NoticeDAO>()));
     di.register<NoticeApi>(() => NoticeApi(di<NoticeService>()));
+
+    // Ocorrencias
+    di.register<ComplaintDAO>(() => ComplaintDAO(di<DBConfiguration>()));
+    di.register<ComplaintService>(() => ComplaintService(di<ComplaintDAO>()));
+    di.register<ComplaintApi>(() => ComplaintApi(di<ComplaintService>()));
 
     return di;
   }
