@@ -9,13 +9,14 @@ class ResidentDAO implements DAO<ResidentModel> {
   @override
   Future<bool> create(ResidentModel value) async {
     var result = await _dbConfiguration.execQuery(
-        'INSERT INTO tb_resident (apartament, optApartament, isRental, idUser, idCondo) VALUES (:apartament, :optApartament, :isRental, :idUser, :idCondo)',
+        'INSERT INTO tb_resident (apartament, optApartament, isRental, idUser, idCondo) VALUES (:apartament, :optApartament, :isRental, :idUser, :idCondo, :idUserRental)',
         {
           'apartament': value.apartament,
           'optApartament': value.optApartament,
           'isRental': value.isRental,
           'idUser': value.idUser,
-          'idCondo': value.idCondo
+          'idCondo': value.idCondo,
+          'idUserRental': value.idUserRental
         });
     return result.affectedRows.toInt() > 0;
   }
@@ -41,8 +42,8 @@ class ResidentDAO implements DAO<ResidentModel> {
   @override
   Future<bool> update(ResidentModel value) async {
     var result = await _dbConfiguration.execQuery(
-      'UPDATE tb_resident SET isRental = :isRental, idUser = :idUser WHERE id = :id',
-      {'isRental': value.isRental, 'idUser': value.idUser, 'id': value.id},
+      'UPDATE tb_resident SET isRental = :isRental, idUser = :idUser, idUserRental = :idUserRental WHERE id = :id',
+      {'isRental': value.isRental, 'idUser': value.idUser, 'idUserRental':value.idUserRental ,'id': value.id},
     );
     return result.affectedRows.toInt() > 0;
   }
@@ -50,6 +51,18 @@ class ResidentDAO implements DAO<ResidentModel> {
   Future<List<ResidentModel>> findAllByCondo(int idCondo) async {
     var result =
         await _dbConfiguration.execQuery('SELECT * FROM tb_resident WHERE idCondo = :idCondo', {'idCondo': idCondo});
+    return result.rows.map((r) => ResidentModel.fromMap(r.assoc())).toList().cast<ResidentModel>();
+  }
+
+  Future<List<ResidentModel>> findAllByUser(int idUser) async {
+    var result =
+        await _dbConfiguration.execQuery('SELECT * FROM tb_resident WHERE idUser = :idUser', {'idUser': idUser});
+    return result.rows.map((r) => ResidentModel.fromMap(r.assoc())).toList().cast<ResidentModel>();
+  }
+
+  Future<List<ResidentModel>> findAllByTower(int idCondo, String optApartament) async {
+    var result =
+        await _dbConfiguration.execQuery('SELECT * FROM tb_resident WHERE idCondo = :idCondo AND optApartament = :optApartament', {'idCondo': idCondo, 'optApartament': optApartament});
     return result.rows.map((r) => ResidentModel.fromMap(r.assoc())).toList().cast<ResidentModel>();
   }
 }

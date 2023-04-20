@@ -50,8 +50,13 @@ class UserDAO implements DAO<UserModel> {
     return result.affectedRows.toInt() > 0;
   }
 
-    Future<UserModel?> findByDocument(String document) async {
+  Future<UserModel?> findByDocument(String document) async {
     var r = await _dbConfiguration.execQuery('SELECT * FROM tb_user WHERE document = :document', {'document': document});
     return r.rows.isEmpty ? null : UserModel.fromDocument(r.rows.first.assoc());
+  }
+
+  Future<UserModel?> findByDocumentSearch(String document) async {
+    var r = await _dbConfiguration.execQuery('SELECT * FROM tb_user WHERE document = :document', {'document': document});
+    return r.rows.isEmpty ? null : UserModel.fromMap(r.rows.first.assoc());
   }
 }

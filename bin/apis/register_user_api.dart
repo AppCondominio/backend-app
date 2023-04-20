@@ -5,11 +5,11 @@ import 'package:shelf/shelf.dart';
 import 'package:shelf_router/shelf_router.dart';
 
 import '../models/user_model.dart';
-import '../services/generic_service.dart';
+import '../services/register_user_service.dart';
 import 'api.dart';
 
 class RegisterUserApi extends Api {
-  final GenericService<UserModel> _service;
+  final RegisterUserService _service;
   RegisterUserApi(this._service);
 
   @override
@@ -22,10 +22,34 @@ class RegisterUserApi extends Api {
       return result ? Response(201) : Response(500);
     });
 
-    router.get('/user', (Request req) async {
+    router.get('/user/all', (Request req) async {
       List<UserModel> registers = await _service.findAll();
       List<Map> registerMap = registers.map((e) => e.toJson()).toList();
       return Response.ok(jsonEncode(registerMap));
+    });
+
+    router.get('/user', (Request req) async {
+      String? id = req.url.queryParameters['id'];
+      if (id == null) return Response(400);
+      var user = await _service.findOne(int.parse(id));
+      if (user == null) return Response(404);
+      return Response.ok(jsonEncode(user.toJson()));
+    });
+
+    router.get('/user/document', (Request req) async {
+      String? id = req.url.queryParameters['document'];
+      if (id == null) return Response(400);
+      var user = await _service.findByDocument(id);
+      if (user == null) return Response(404);
+      return Response.ok(jsonEncode(user.toJson()));
+    });
+
+    router.get('/user/search', (Request req) async {
+      String? id = req.url.queryParameters['document'];
+      if (id == null) return Response(400);
+      var user = await _service.findByDocumentSearch(id);
+      if (user == null) return Response(404);
+      return Response.ok(jsonEncode(user.toJson()));
     });
 
     return createHandler(

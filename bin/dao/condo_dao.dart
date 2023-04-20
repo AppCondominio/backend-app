@@ -9,7 +9,7 @@ class CondoDAO implements DAO<CondoModel> {
   @override
   Future<bool> create(CondoModel value) async {
     var result = await _dbConfiguration.execQuery(
-        'INSERT INTO tb_condo (name,document,password,email,zipCode,addressNumber) VALUES (:name,:document,:password,:email,:zipCode,:addressNumber)',
+        'INSERT INTO tb_condo (name,document,password,email,zipCode,addressNumber,optAddress) VALUES (:name,:document,:password,:email,:zipCode,:addressNumber,:optAddress)',
         {
           'name': value.name,
           'document': value.document,
@@ -17,6 +17,7 @@ class CondoDAO implements DAO<CondoModel> {
           'email': value.email,
           'zipCode': value.zipCode,
           'addressNumber': value.addressNumber,
+          'optAddress': value.optAddress
         });
     return result.affectedRows.toInt() > 0;
   }
@@ -42,8 +43,8 @@ class CondoDAO implements DAO<CondoModel> {
   @override
   Future<bool> update(CondoModel value) async {
     var result = await _dbConfiguration.execQuery(
-      'UPDATE tb_condo SET name = :name, password = :password, dtUpdated = :dtUpdated WHERE id = :id',
-      {'name': value.name, 'password': value.password,'dtUpdated' : DateTime.now(),'id': value.id},
+      'UPDATE tb_condo SET password = :password, email = :email ,dtUpdated = :dtUpdated WHERE id = :id',
+      {'password': value.password, 'email': value.email,'dtUpdated' : DateTime.now(),'id': value.id},
     );
     return result.affectedRows.toInt() > 0;
   }

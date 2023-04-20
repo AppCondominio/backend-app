@@ -24,10 +24,16 @@ class NoticeApi extends Api {
 
     router.get('/notice/all', (Request req) async {
       String? idCondo = req.url.queryParameters['idCondo'];
+      String? stauts = req.url.queryParameters['status'];
+      List<NoticeModel> notices;
       if (idCondo == null) return Response(400);
-      List<NoticeModel> residents = await _service.findAllByIdCondo(int.parse(idCondo));
-      List<Map> residentsMap = residents.map((e) => e.toJson()).toList();
-      return Response.ok(jsonEncode(residentsMap));
+      if (stauts != null) {
+        notices = await _service.findAllByIdCondo(int.parse(idCondo), status: stauts);
+      } else {
+        notices = await _service.findAllByIdCondo(int.parse(idCondo));
+      }
+      List<Map> noticesMap = notices.map((e) => e.toJson()).toList();
+      return Response.ok(jsonEncode(noticesMap));
     });
 
     router.get('/notice', (Request req) async {

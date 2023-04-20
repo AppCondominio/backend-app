@@ -25,8 +25,23 @@ class RegisterResidentApi extends Api {
 
     router.get('/resident/all', (Request req) async {
       String? idCondo = req.url.queryParameters['idCondo'];
+      String? optApartament = req.url.queryParameters['optApartament'];
       if (idCondo == null) return Response(400);
-      List<ResidentModel> residents = await _service.findAllByCondo(int.parse(idCondo));
+      List<ResidentModel> residents;
+      if (optApartament != null) {
+        residents = await _service.findAllByTower(int.parse(idCondo), optApartament);
+      } else {
+        residents = await _service.findAllByCondo(int.parse(idCondo));
+      }
+      List<Map> residentsMap = residents.map((e) => e.toJson()).toList();
+      return Response.ok(jsonEncode(residentsMap));
+    });
+
+    router.get('/resident/all/user', (Request req) async {
+      String? idUser = req.url.queryParameters['idUser'];
+      if (idUser == null) return Response(400);
+      List<ResidentModel> residents;
+      residents = await _service.findAllByUser(int.parse(idUser));
       List<Map> residentsMap = residents.map((e) => e.toJson()).toList();
       return Response.ok(jsonEncode(residentsMap));
     });

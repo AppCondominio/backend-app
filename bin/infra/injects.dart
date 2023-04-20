@@ -8,6 +8,7 @@ import '../apis/recreation_api.dart';
 import '../apis/register_condo_api.dart';
 import '../apis/register_resident_api.dart';
 import '../apis/register_user_api.dart';
+import '../apis/select_apt_api.dart';
 import '../apis/tower_settings_api.dart';
 import '../apis/notice_api.dart';
 import '../dao/complaint_dao.dart';
@@ -16,13 +17,12 @@ import '../dao/cooperator_settings_dao.dart';
 import '../dao/notice_dao.dart';
 import '../dao/recreation_settings_dao.dart';
 import '../dao/resident_dao.dart';
+import '../dao/select_apt_dao.dart';
 import '../dao/settings_condo_dao.dart';
+
 import '../dao/tower_settings_dao.dart';
 import '../dao/user_dao.dart';
 import '../models/condo_model.dart';
-import '../models/cooperator_model.dart';
-import '../models/user_model.dart';
-import '../models/notice_model.dart';
 import '../services/complaint_service.dart';
 import '../services/condo_settings_service.dart';
 import '../services/cooperator_service.dart';
@@ -32,6 +32,7 @@ import '../services/recreation_service.dart';
 import '../services/register_condo_service.dart';
 import '../services/register_resident_service.dart';
 import '../services/register_user_service.dart';
+import '../services/select_apt_service.dart';
 import '../services/tower_settings_service.dart';
 import '../services/notice_service.dart';
 import 'database/db_configuration.dart';
@@ -54,12 +55,12 @@ class Injects {
 
     // Usuario
     di.register<UserDAO>(() => UserDAO(di<DBConfiguration>()));
-    di.register<GenericService<UserModel>>(() => RegisterUserService(di<UserDAO>()));
-    di.register<RegisterUserApi>(() => RegisterUserApi(di<GenericService<UserModel>>()));
+    di.register<RegisterUserService>(() => RegisterUserService(di<UserDAO>()));
+    di.register<RegisterUserApi>(() => RegisterUserApi(di<RegisterUserService>()));
 
     // Login
-    di.register<LoginService>(() => LoginService(di<GenericService<CondoModel>>(), di<GenericService<UserModel>>()));
-    di.register<LoginApi>(() => LoginApi(di<SecurityService>(), di<LoginService>()));
+    di.register<LoginService>(() => LoginService(di<GenericService<CondoModel>>(), di<RegisterUserService>()));
+    di.register<LoginApi>(() => LoginApi(di<LoginService>()));
 
     // Residentes
     di.register<ResidentDAO>(() => ResidentDAO(di<DBConfiguration>()));
@@ -95,6 +96,10 @@ class Injects {
     di.register<ComplaintDAO>(() => ComplaintDAO(di<DBConfiguration>()));
     di.register<ComplaintService>(() => ComplaintService(di<ComplaintDAO>()));
     di.register<ComplaintApi>(() => ComplaintApi(di<ComplaintService>()));
+
+    di.register<SelectAptDAO>(() => SelectAptDAO(di<DBConfiguration>()));
+    di.register<SelectAptService>(() => SelectAptService(di<SelectAptDAO>()));
+    di.register<SelectAptAPI>(() => SelectAptAPI(di<SelectAptService>()));
 
     return di;
   }

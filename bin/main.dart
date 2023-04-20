@@ -8,6 +8,7 @@ import 'apis/recreation_api.dart';
 import 'apis/register_condo_api.dart';
 import 'apis/register_resident_api.dart';
 import 'apis/register_user_api.dart';
+import 'apis/select_apt_api.dart';
 import 'apis/tower_settings_api.dart';
 import 'apis/notice_api.dart';
 import 'infra/custom_server.dart';
@@ -30,6 +31,7 @@ void main() async {
       .add(_di.get<CooperatorApi>().getHandler())
       .add(_di.get<NoticeApi>().getHandler())
       .add(_di.get<ComplaintApi>().getHandler())
+      .add(_di.get<SelectAptAPI>().getHandler())
       .handler;
 
   var handler = Pipeline()

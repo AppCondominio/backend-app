@@ -2,8 +2,9 @@ class NoticeModel {
   int? id;
   String? title;
   String? description;
-  List<int>? attached;
+  String? attached;
   String? dtToDelete;
+  int? leftDays;
   String? dtCreated;
   String? dtUpdated;
   String? status;
@@ -16,7 +17,7 @@ class NoticeModel {
       ..id = int.parse(map['id'])
       ..title = map['title']
       ..description = map['description']
-      ..attached = map['attached'] == null ? [] : map['attached'].getBytes()
+      ..attached = map['attached']
       ..dtToDelete = map['dtToDelete']
       ..dtCreated = map['dtCreated']
       ..dtUpdated = map['dtUpdated']
@@ -31,9 +32,9 @@ class NoticeModel {
       ..description = map['description']
       ..attached = map['attached']
       ..dtToDelete = map['dtToDelete']
+      ..status = map['status']
       ..idCondo = map['idCondo'];
   }
-
 
   Map toJson() => {
         'id': id,
@@ -41,6 +42,7 @@ class NoticeModel {
         'description': description,
         'attached': attached,
         'dtToDelete': dtToDelete,
+        'leftDays': leftDays,
         'dtCreated': dtCreated,
         'dtUpdated': dtUpdated,
         'status': status,

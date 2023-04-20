@@ -1,3 +1,5 @@
+import 'package:intl/intl.dart';
+
 import '../dao/notice_dao.dart';
 import '../models/notice_model.dart';
 import 'generic_service.dart';
@@ -24,5 +26,18 @@ class NoticeService implements GenericService<NoticeModel> {
     }
   }
 
-  Future<List<NoticeModel>> findAllByIdCondo(int idCondo) async => _noticeDAO.findAllByIdCondo(idCondo);
+  Future<List<NoticeModel>> findAllByIdCondo(int idCondo, {String? status}) async {
+    var notices;
+    status != null ? notices = await _noticeDAO.findAllByStatus(idCondo, status) : notices = await _noticeDAO.findAllByIdCondo(idCondo);
+
+    DateTime? dtToDeleteTD;
+    DateTime today = DateTime.now();
+    for (var notice in notices) {
+      dtToDeleteTD = DateTime.tryParse(notice.dtToDelete!);
+      Duration diference = dtToDeleteTD!.difference(today);
+      notice.leftDays = diference.inDays;
+      notice.dtToDelete = DateFormat('dd/MM/yyyy').format(dtToDeleteTD);
+    }
+    return notices;
+  }
 }

@@ -1,3 +1,4 @@
+import 'dart:collection';
 import 'dart:convert';
 
 class RecreationModel {
@@ -33,16 +34,22 @@ class RecreationModel {
       ..idSettingCondo = map['idSettingCondo'];
   }
 
-  Map toJson() => {
-        'id': id,
-        'name': name,
-        'price': price,
-        'availability': availability,
-        'dtCreated': dtCreated,
-        'dtUpdated': dtUpdated,
-        'status': status,
-        'idSettingCondo': idSettingCondo
-      };
+  Map toJson() {
+    Map<String, bool> diasDaSemana = LinkedHashMap<String, bool>();
+    for (String dia in ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab']) {
+      diasDaSemana[dia] = availability![dia];
+    }
+    return {
+      'id': id,
+      'name': name,
+      'price': price,
+      'availability': diasDaSemana,
+      'dtCreated': dtCreated,
+      'dtUpdated': dtUpdated,
+      'status': status,
+      'idSettingCondo': idSettingCondo
+    };
+  }
 
   @override
   String toString() {

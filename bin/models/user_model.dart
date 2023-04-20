@@ -32,6 +32,7 @@ class UserModel {
       ..name = map['name']
       ..lastName = map['lastName']
       ..document = map['document']
+      ..password = map['password']
       ..email = map['email']
       ..phone = map['phone'];
   }
@@ -39,6 +40,7 @@ class UserModel {
   factory UserModel.fromDocument(Map map) {
     return UserModel()
       ..id = int.parse(map['id'])
+      ..document = map['document']
       ..password = map['password'];
   }
 
@@ -51,6 +53,8 @@ class UserModel {
       'phone': phone,
     };
   }
+
+  Map toJsonLogin() => {'id': id, 'document': document};
 
   @override
   String toString() {

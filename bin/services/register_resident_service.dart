@@ -25,4 +25,8 @@ class RegisterResidentService implements GenericService<ResidentModel> {
   }
 
   Future<List<ResidentModel>> findAllByCondo(int idCondo) async => await _residentDAO.findAllByCondo(idCondo);
+
+  Future<List<ResidentModel>> findAllByUser(int idUser) async => await _residentDAO.findAllByUser(idUser);
+
+  Future<List<ResidentModel>> findAllByTower(int idCondo, String optApartament) async => await _residentDAO.findAllByTower(idCondo, optApartament);
 }

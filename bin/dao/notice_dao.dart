@@ -8,15 +8,13 @@ class NoticeDAO implements DAO<NoticeModel> {
 
   @override
   Future<bool> create(NoticeModel value) async {
+    DateTime today = DateTime.now();
+    int days = int.parse(value.dtToDelete!);
+    value.dtToDelete = today.add(Duration(days: days)).toString();
     var result = await _dbConfiguration.execQuery(
-        'INSERT INTO tb_notices (title,description,attached,dtToDelete,idCondo) VALUES (:title,:description,:attached,:dtToDelete,:idCondo)',
-        {
-          'title': value.title,
-          'description': value.description,
-          'attached': value.attached,
-          'dtToDelete': value.dtToDelete,
-          'idCondo': value.idCondo
-        });
+      'INSERT INTO tb_notices (title,description,attached,dtToDelete,idCondo) VALUES (:title,:description,:attached,:dtToDelete,:idCondo)',
+      {'title': value.title, 'description': value.description, 'attached': value.attached, 'dtToDelete': value.dtToDelete, 'idCondo': value.idCondo},
+    );
     return result.affectedRows.toInt() > 0;
   }
 
@@ -41,21 +39,24 @@ class NoticeDAO implements DAO<NoticeModel> {
   @override
   Future<bool> update(NoticeModel value) async {
     var result = await _dbConfiguration.execQuery(
-      'UPDATE tb_notices SET status = :status WHERE id = :id',
-      {'status': value.status, 'id': value.id},
+      'UPDATE tb_notices SET status = :status, dtUpdated = :dtUpdated WHERE id = :id',
+      {'status': value.status, 'dtUpdated': DateTime.now(), 'id': value.id},
     );
     return result.affectedRows.toInt() > 0;
   }
 
   Future<List<NoticeModel>> findAllByIdCondo(int idCondo) async {
-    var result =
-        await _dbConfiguration.execQuery('SELECT * FROM tb_notices WHERE idCondo = :idCondo', {'idCondo': idCondo});
+    var result = await _dbConfiguration.execQuery('SELECT * FROM tb_notices WHERE idCondo = :idCondo', {'idCondo': idCondo});
+    return result.rows.map((r) => NoticeModel.fromMap(r.assoc())).toList().cast<NoticeModel>();
+  }
+
+  Future<List<NoticeModel>> findAllByStatus(int idCondo, String stauts) async {
+    var result = await _dbConfiguration.execQuery('SELECT * FROM tb_notices WHERE idCondo = :idCondo AND status = :status', {'idCondo': idCondo, 'status':stauts});
     return result.rows.map((r) => NoticeModel.fromMap(r.assoc())).toList().cast<NoticeModel>();
   }
 
   Future<bool> deleteByDate(int id) async {
-    var result = await _dbConfiguration.execQuery('DELETE FROM tb_notices WHERE dtToDelete <= :today', {'today': DateTime.now()});
+    var result = await _dbConfiguration.execQuery('DELETE FROM tb_notices WHERE dtToDelete <= :today AND status = :status', {'today': DateTime.now(), 'status': 'A'});
     return result.affectedRows.toInt() > 0;
   }
 }
-

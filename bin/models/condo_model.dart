@@ -40,6 +40,7 @@ class CondoModel {
   factory CondoModel.fromDocument(Map map) {
     return CondoModel()
       ..id = int.parse(map['id'])
+      ..document = map['document']
       ..password = map['password'];
   }
 
@@ -97,6 +98,8 @@ class CondoModel {
         'dtUpdated': dtUpdated,
         'status': status,
       };
+
+  Map toJsonLogin() => {'id': id, 'document': document};
 
   @override
   String toString() {
