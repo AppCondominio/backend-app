@@ -9,7 +9,7 @@ class ResidentDAO implements DAO<ResidentModel> {
   @override
   Future<bool> create(ResidentModel value) async {
     var result = await _dbConfiguration.execQuery(
-        'INSERT INTO tb_resident (apartament, optApartament, isRental, idUser, idCondo) VALUES (:apartament, :optApartament, :isRental, :idUser, :idCondo, :idUserRental)',
+        'INSERT INTO tb_resident (apartament, optApartament, isRental, idUser, idCondo, idUserRental) VALUES (:apartament, :optApartament, :isRental, :idUser, :idCondo, :idUserRental)',
         {
           'apartament': value.apartament,
           'optApartament': value.optApartament,
@@ -50,7 +50,7 @@ class ResidentDAO implements DAO<ResidentModel> {
 
   Future<List<ResidentModel>> findAllByCondo(int idCondo) async {
     var result =
-        await _dbConfiguration.execQuery('SELECT * FROM tb_resident WHERE idCondo = :idCondo', {'idCondo': idCondo});
+        await _dbConfiguration.execQuery('SELECT * FROM tb_resident WHERE idCondo = :idCondo ORDER BY optApartament, apartament', {'idCondo': idCondo});
     return result.rows.map((r) => ResidentModel.fromMap(r.assoc())).toList().cast<ResidentModel>();
   }
 

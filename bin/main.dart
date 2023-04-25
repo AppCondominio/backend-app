@@ -1,4 +1,7 @@
+// ignore_for_file: no_leading_underscores_for_local_identifiers
+
 import 'package:shelf/shelf.dart';
+import 'package:shelf_cors_headers/shelf_cors_headers.dart';
 
 import 'apis/complaint_api.dart';
 import 'apis/condo_settings_api.dart';
@@ -37,6 +40,7 @@ void main() async {
   var handler = Pipeline()
       .addMiddleware(logRequests())
       .addMiddleware(MiddlewareInterception().middleware)
+      .addMiddleware(corsHeaders())
       .addHandler(cascadeHandler);
 
   await CustomServer().initialize(
