@@ -29,7 +29,7 @@ class RecreationModel {
     return RecreationModel()
       ..id = map['id']
       ..name = map['name']
-      ..price = map['price']
+      ..price = map['price'].toDouble()
       ..availability = map['availability']
       ..idSettingCondo = map['idSettingCondo'];
   }
