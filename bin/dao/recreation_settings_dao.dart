@@ -11,12 +11,14 @@ class RecreationSettingDAO implements DAO<RecreationModel> {
   @override
   Future<bool> create(RecreationModel value) async {
     var result = await _dbConfiguration.execQuery(
-      'INSERT INTO tb_recreation_settings (name, price, availability, idSettingCondo) VALUES (:name, :price, :availability, :idSettingCondo)',
+      'INSERT INTO tb_recreation_settings (name, price, availability, idSettingCondo, policyDocument, description) VALUES (:name, :price, :availability, :idSettingCondo, :policyDocument, :description)',
       {
         'name': value.name,
         'price': value.price,
         'availability': jsonEncode(value.availability),
-        'idSettingCondo': value.idSettingCondo
+        'idSettingCondo': value.idSettingCondo,
+        'policyDocument': value.policyDocument,
+        'description': value.description
       });
     return result.affectedRows.toInt() > 0;
   }
@@ -42,8 +44,8 @@ class RecreationSettingDAO implements DAO<RecreationModel> {
   @override
   Future<bool> update(RecreationModel value) async {
     var result = await _dbConfiguration.execQuery(
-      'UPDATE tb_recreation_settings SET name = :name, price = :price, availability = :availability, dtUpdated = :dtUpdated WHERE id = :id',
-      {'name': value.name, 'price': value.price, 'availability': jsonEncode(value.availability), 'dtUpdated': DateTime.now(), 'id': value.id},
+      'UPDATE tb_recreation_settings SET name = :name, price = :price, availability = :availability, dtUpdated = :dtUpdated, policyDocument = :policyDocument, description = :description WHERE id = :id',
+      {'name': value.name, 'price': value.price, 'availability': jsonEncode(value.availability), 'dtUpdated': DateTime.now(), 'policyDocument': value.policyDocument,'description':value.description ,'id': value.id},
     );
     return result.affectedRows.toInt() > 0;
   }

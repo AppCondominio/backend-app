@@ -11,6 +11,7 @@ import 'apis/recreation_api.dart';
 import 'apis/register_condo_api.dart';
 import 'apis/register_resident_api.dart';
 import 'apis/register_user_api.dart';
+import 'apis/reminder_api.dart';
 import 'apis/select_apt_api.dart';
 import 'apis/tower_settings_api.dart';
 import 'apis/notice_api.dart';
@@ -35,6 +36,7 @@ void main() async {
       .add(_di.get<NoticeApi>().getHandler())
       .add(_di.get<ComplaintApi>().getHandler())
       .add(_di.get<SelectAptAPI>().getHandler())
+      .add(_di.get<ReminderApi>().getHandler())
       .handler;
 
   var handler = Pipeline()

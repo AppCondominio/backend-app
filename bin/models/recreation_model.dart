@@ -1,3 +1,4 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:collection';
 import 'dart:convert';
 
@@ -10,6 +11,8 @@ class RecreationModel {
   String? dtUpdated;
   String? status;
   int? idSettingCondo;
+  String? policyDocument;
+  String? description;
 
   RecreationModel();
 
@@ -22,7 +25,9 @@ class RecreationModel {
       ..dtCreated = map['dtCreated']
       ..dtUpdated = map['dtUpdated']
       ..status = map['status']
-      ..idSettingCondo = int.parse(map['idSettingCondo']);
+      ..idSettingCondo = int.parse(map['idSettingCondo'])
+      ..policyDocument = map['policyDocument']
+      ..description = map['description'];
   }
 
   factory RecreationModel.fromRequest(Map map) {
@@ -31,7 +36,9 @@ class RecreationModel {
       ..name = map['name']
       ..price = map['price'].toDouble()
       ..availability = map['availability']
-      ..idSettingCondo = map['idSettingCondo'];
+      ..idSettingCondo = map['idSettingCondo']
+      ..policyDocument = map['policyDocument']
+      ..description = map['description'];
   }
 
   Map toJson() {
@@ -47,12 +54,14 @@ class RecreationModel {
       'dtCreated': dtCreated,
       'dtUpdated': dtUpdated,
       'status': status,
-      'idSettingCondo': idSettingCondo
+      'idSettingCondo': idSettingCondo,
+      'policyDocument': policyDocument,
+      'description': description
     };
   }
 
   @override
   String toString() {
-    return 'RecreationModel(id: $id, nome: $name, price: $price, availability: $availability, dtCreated: $dtCreated, dtUpdated: $dtUpdated, status: $status)';
+    return 'RecreationModel(id: $id, name: $name, price: $price, availability: $availability, dtCreated: $dtCreated, dtUpdated: $dtUpdated, status: $status, idSettingCondo: $idSettingCondo, policyDocument: $policyDocument, description: $description)';
   }
 }
