@@ -3,6 +3,7 @@
 import 'package:shelf/shelf.dart';
 import 'package:shelf_cors_headers/shelf_cors_headers.dart';
 
+import 'apis/calendar_api.dart';
 import 'apis/complaint_api.dart';
 import 'apis/condo_settings_api.dart';
 import 'apis/cooperator_api.dart';
@@ -37,6 +38,7 @@ void main() async {
       .add(_di.get<ComplaintApi>().getHandler())
       .add(_di.get<SelectAptAPI>().getHandler())
       .add(_di.get<ReminderApi>().getHandler())
+      .add(_di.get<CalendarApi>().getHandler())
       .handler;
 
   var handler = Pipeline()

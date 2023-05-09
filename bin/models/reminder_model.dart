@@ -3,7 +3,7 @@ class ReminderModel {
   int? id;
   String? title;
   String? description;
-  DateTime? dtCreated;
+  String? dtCreated;
   int? idCondo;
 
   ReminderModel();

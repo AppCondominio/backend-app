@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:convert';
 
 import '../infra/database/db_configuration.dart';
 import '../models/reminder_model.dart';
@@ -48,10 +47,9 @@ class ReminderDAO implements DAO<ReminderModel> {
     return result.rows.map((r) => ReminderModel.fromMap(r.assoc())).toList().cast<ReminderModel>();
   }
 
-  Future<bool> deleteOldRecord() async {
+  Future<void> deleteOldRecord() async {
     final sixtyDaysAgo = DateTime.now().subtract(Duration(days: 60));
-    var result = await _dbConfiguration.execQuery('DELETE FROM tb_reminder WHERE dtCreated < :date', {'date': sixtyDaysAgo.toIso8601String()});
-    return result.affectedRows.toInt() > 0;
+    await _dbConfiguration.execQuery('DELETE FROM tb_reminder WHERE dtCreated < :date', {'date': sixtyDaysAgo.toIso8601String()});
   }
 
   void scheduleDelete() {

@@ -1,5 +1,6 @@
 import 'package:commons_core/commons_core.dart';
 
+import '../apis/calendar_api.dart';
 import '../apis/complaint_api.dart';
 import '../apis/condo_settings_api.dart';
 import '../apis/cooperator_api.dart';
@@ -12,6 +13,7 @@ import '../apis/reminder_api.dart';
 import '../apis/select_apt_api.dart';
 import '../apis/tower_settings_api.dart';
 import '../apis/notice_api.dart';
+import '../dao/calendar_dao.dart';
 import '../dao/complaint_dao.dart';
 import '../dao/condo_dao.dart';
 import '../dao/cooperator_settings_dao.dart';
@@ -25,6 +27,7 @@ import '../dao/settings_condo_dao.dart';
 import '../dao/tower_settings_dao.dart';
 import '../dao/user_dao.dart';
 import '../models/condo_model.dart';
+import '../services/calendar_service.dart';
 import '../services/complaint_service.dart';
 import '../services/condo_settings_service.dart';
 import '../services/cooperator_service.dart';
@@ -109,6 +112,11 @@ class Injects {
     di.register<ReminderDAO>(() => ReminderDAO(di<DBConfiguration>()));
     di.register<ReminderService>(() => ReminderService(di<ReminderDAO>()));
     di.register<ReminderApi>(() => ReminderApi(di<ReminderService>()));
+
+    // Agenda / Calendário para os condomínios
+    di.register<CalendarDAO>(() => CalendarDAO(di<DBConfiguration>()));
+    di.register<CalendarService>(() => CalendarService(di<CalendarDAO>()));
+    di.register<CalendarApi>(() => CalendarApi(di<CalendarService>()));
 
     return di;
   }
