@@ -22,7 +22,17 @@ class SelectAptAPI extends Api {
       if (residents.isNotEmpty) {
         for (final resident in residents) {
           final condo = await _service.findCondo(resident.idCondo!);
-          resultado.add({'userName': user.name, 'condoName': condo.name, 'zipCode': condo.zipCode, 'idCondo': condo.id, 'idResident': resident.id,'city': null, 'uf': null, 'apt':resident.apartament, 'opt':resident.optApartament});
+          resultado.add({
+            'userName': user.name,
+            'condoName': condo.name,
+            'zipCode': condo.zipCode,
+            'idCondo': condo.id,
+            'idResident': resident.id,
+            'city': null,
+            'uf': null,
+            'apt': resident.apartament,
+            'opt': resident.optApartament
+          });
         }
       } else {
         resultado.add({'userName': user.name});

@@ -44,8 +44,16 @@ class UserDAO implements DAO<UserModel> {
   @override
   Future<bool> update(UserModel value) async {
     var result = await _dbConfiguration.execQuery(
-      'UPDATE tb_user SET password = :password, email = :email, phone = :phone WHERE id = :id',
-      {'password': value.password, 'email': value.email, 'phone': value.phone, 'id': value.id},
+      'UPDATE tb_user SET email = :email, phone = :phone WHERE id = :id',
+      {'email': value.email, 'phone': value.phone, 'id': value.id},
+    );
+    return result.affectedRows.toInt() > 0;
+  }
+
+  Future<bool> updatePassword(UserModel value) async {
+    var result = await _dbConfiguration.execQuery(
+      'UPDATE tb_user SET password = :password WHERE id = :id',
+      {'password': value.password, 'id': value.id},
     );
     return result.affectedRows.toInt() > 0;
   }

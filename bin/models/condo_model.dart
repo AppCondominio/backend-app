@@ -41,6 +41,7 @@ class CondoModel {
     return CondoModel()
       ..id = int.parse(map['id'])
       ..document = map['document']
+      ..email = map['email']
       ..password = map['password'];
   }
 
@@ -99,7 +100,7 @@ class CondoModel {
         'status': status,
       };
 
-  Map toJsonLogin() => {'id': id, 'document': document};
+  Map toJsonLogin() => {'id': id, 'document': document, 'email': email};
 
   @override
   String toString() {

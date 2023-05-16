@@ -24,7 +24,6 @@ class SelectAptDAO {
         ..id = int.parse(row['id'])
         ..apartament = row['apartament']
         ..optApartament = row['optApartament']
-        ..idUser = int.parse(row['idUser'])
         ..idCondo = int.parse(row['idCondo']));
     }
     return residents;

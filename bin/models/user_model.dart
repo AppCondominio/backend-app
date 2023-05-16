@@ -29,6 +29,7 @@ class UserModel {
 
   factory UserModel.fromRequest(Map map) {
     return UserModel()
+      ..id = map['id']
       ..name = map['name']
       ..lastName = map['lastName']
       ..document = map['document']

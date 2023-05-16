@@ -9,16 +9,15 @@ class CondoDAO implements DAO<CondoModel> {
   @override
   Future<bool> create(CondoModel value) async {
     var result = await _dbConfiguration.execQuery(
-        'INSERT INTO tb_condo (name,document,password,email,zipCode,addressNumber,optAddress) VALUES (:name,:document,:password,:email,:zipCode,:addressNumber,:optAddress)',
-        {
-          'name': value.name,
-          'document': value.document,
-          'password': value.password,
-          'email': value.email,
-          'zipCode': value.zipCode,
-          'addressNumber': value.addressNumber,
-          'optAddress': value.optAddress
-        });
+        'INSERT INTO tb_condo (name,document,password,email,zipCode,addressNumber,optAddress) VALUES (:name,:document,:password,:email,:zipCode,:addressNumber,:optAddress)', {
+      'name': value.name,
+      'document': value.document,
+      'password': value.password,
+      'email': value.email,
+      'zipCode': value.zipCode,
+      'addressNumber': value.addressNumber,
+      'optAddress': value.optAddress
+    });
     return result.affectedRows.toInt() > 0;
   }
 
@@ -44,7 +43,7 @@ class CondoDAO implements DAO<CondoModel> {
   Future<bool> update(CondoModel value) async {
     var result = await _dbConfiguration.execQuery(
       'UPDATE tb_condo SET password = :password, email = :email ,dtUpdated = :dtUpdated WHERE id = :id',
-      {'password': value.password, 'email': value.email,'dtUpdated' : DateTime.now(),'id': value.id},
+      {'password': value.password, 'email': value.email, 'dtUpdated': DateTime.now(), 'id': value.id},
     );
     return result.affectedRows.toInt() > 0;
   }
@@ -52,5 +51,10 @@ class CondoDAO implements DAO<CondoModel> {
   Future<CondoModel?> findByDocument(String document) async {
     var r = await _dbConfiguration.execQuery('SELECT * FROM tb_condo WHERE document = :document', {'document': document});
     return r.rows.isEmpty ? null : CondoModel.fromDocument(r.rows.first.assoc());
+  }
+
+  Future<CondoModel?> buscarCliente(String email) async {
+    var r = await _dbConfiguration.execQuery('SELECT * FROM tb_condo WHERE email = :email', {'email': email});
+    return r.rows.isEmpty ? null : CondoModel.fromMap(r.rows.first.assoc());
   }
 }

@@ -29,7 +29,7 @@ class RegisterUserService implements GenericService<UserModel> {
       if (value.password != null) {
         final hash = Password.hash(value.password!, PBKDF2());
         value.password = hash;
-        return await _userDAO.update(value);
+        return await _userDAO.updatePassword(value);
       }
       return await _userDAO.update(value);
     } else {

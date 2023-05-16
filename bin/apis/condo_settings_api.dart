@@ -26,7 +26,7 @@ class CondoSettingsApi extends Api {
       String? idCondo = req.url.queryParameters['idCondo'];
       if (idCondo == null) return Response(400);
       var settings = await _service.findOne(int.parse(idCondo));
-      if (settings == null) return Response(404);
+      if (settings == null) return Response(404, body: 'Not Found');
       return Response(200, body: jsonEncode(settings.toJson()));
     });
 
