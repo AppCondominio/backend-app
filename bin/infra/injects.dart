@@ -10,6 +10,7 @@ import '../apis/register_condo_api.dart';
 import '../apis/register_resident_api.dart';
 import '../apis/register_user_api.dart';
 import '../apis/reminder_api.dart';
+import '../apis/schedule_api.dart';
 import '../apis/select_apt_api.dart';
 import '../apis/tower_settings_api.dart';
 import '../apis/notice_api.dart';
@@ -21,6 +22,7 @@ import '../dao/notice_dao.dart';
 import '../dao/recreation_settings_dao.dart';
 import '../dao/reminder_dao.dart';
 import '../dao/resident_dao.dart';
+import '../dao/schedule_dao.dart';
 import '../dao/select_apt_dao.dart';
 import '../dao/settings_condo_dao.dart';
 
@@ -38,6 +40,7 @@ import '../services/register_condo_service.dart';
 import '../services/register_resident_service.dart';
 import '../services/register_user_service.dart';
 import '../services/reminder_service.dart';
+import '../services/schedule_service.dart';
 import '../services/select_apt_service.dart';
 import '../services/tower_settings_service.dart';
 import '../services/notice_service.dart';
@@ -117,6 +120,11 @@ class Injects {
     di.register<CalendarDAO>(() => CalendarDAO(di<DBConfiguration>()));
     di.register<CalendarService>(() => CalendarService(di<CalendarDAO>()));
     di.register<CalendarApi>(() => CalendarApi(di<CalendarService>()));
+
+    // Reservas
+    di.register<ScheduleDAO>(() => ScheduleDAO(di<DBConfiguration>()));
+    di.register<ScheduleService>(() => ScheduleService(di<ScheduleDAO>()));
+    di.register<ScheduleApi>(() => ScheduleApi(di<ScheduleService>()));
 
     return di;
   }

@@ -9,10 +9,10 @@ class ComplaintService implements GenericService<ComplaintModel> {
   ComplaintService(this._complaintDAO);
 
   @override
-  Future<bool> delete(int id) async => _complaintDAO.delete(id);
+  Future<bool> delete(int id) async => await _complaintDAO.delete(id);
 
   @override
-  Future<List<ComplaintModel>> findAll() async => _complaintDAO.findAll();
+  Future<List<ComplaintModel>> findAll() async => await _complaintDAO.findAll();
 
   @override
   Future<ComplaintModel?> findOne(int id) async {
