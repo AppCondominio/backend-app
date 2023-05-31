@@ -39,7 +39,7 @@ class ComplaintApi extends Api {
       String? idResident = req.url.queryParameters['idResident'];
       if (idResident == null) return Response(400);
       List<ComplaintModel> residents = await _service.findAllByIdResident(int.parse(idResident));
-      List<Map> residentsMap = residents.map((e) => e.toJson()).toList();
+      List<Map> residentsMap = residents.map((e) => e.toJsonUser()).toList();
       return Response.ok(jsonEncode(residentsMap));
     });
 

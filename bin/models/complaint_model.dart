@@ -79,6 +79,16 @@ class ComplaintModel {
         'phone': phoneCurrentResident,
       };
 
+  Map toJsonUser() => {
+        'id': id,
+        'topic': topic,
+        'description': description,
+        'attached': attached,
+        'dtCreated': dtCreated,
+        'dtUpdated': dtUpdated,
+        'status': status,
+      };
+
   @override
   String toString() {
     return 'ComplaintModel(id: $id, namePersonCreated: $namePersonCreated, lastNamePersonCreated: $lastNamePersonCreated, phonePersonCreated: $phonePersonCreated, topic: $topic, description: $description, attached: $attached, obs: $obs, dtCreated: $dtCreated, dtUpdated: $dtUpdated, status: $status, idCondo: $idCondo, idResident: $idResident, apt: $apt, optApt: $optApt, nameCurrentResident: $nameCurrentResident, lastNameCurrentResident: $lastNameCurrentResident, phoneCurrentResident: $phoneCurrentResident)';

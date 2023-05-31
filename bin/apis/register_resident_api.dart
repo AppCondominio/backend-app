@@ -1,3 +1,5 @@
+// ignore_for_file: no_leading_underscores_for_local_identifiers
+
 import 'dart:convert';
 
 import 'package:shelf/shelf.dart';
@@ -35,6 +37,24 @@ class RegisterResidentApi extends Api {
       }
       List<Map> residentsMap = residents.map((e) => e.toJson()).toList();
       return Response.ok(jsonEncode(residentsMap));
+    });
+
+    router.get('/resident/all/bill', (Request req) async {
+      String? idCondo = req.url.queryParameters['idCondo'];
+      if (idCondo == null) return Response(400);
+      final _residents = await _service.findAllByCondo(int.parse(idCondo));
+      List<Map<String, dynamic>> _resultado = [];
+      if (_residents.isNotEmpty) {
+        for (var data in _residents) {
+          if (data.idUser == -1) {
+            _resultado.add({'id': -1, 'name': '', 'lastName': '' ,'document': '', 'apartament': data.apartament, 'optApartament': data.optApartament});
+          } else {
+            final user = await _service.findUserForBill(data.idUser!);
+            _resultado.add({'id': data.id, 'name': user.name, 'lastName': user.lastName, 'document': user.document, 'apartament': data.apartament, 'optApartament': data.optApartament});
+          }
+        }
+      }
+      return Response(200, body: jsonEncode(_resultado));
     });
 
     router.get('/resident/all/user', (Request req) async {

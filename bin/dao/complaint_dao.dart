@@ -6,9 +6,6 @@ class ComplaintDAO implements DAO<ComplaintModel> {
   final DBConfiguration _dbConfiguration;
   ComplaintDAO(this._dbConfiguration);
 
-  // Ao Criar a reclamacao preciso adicionar o nome, sobrenome e telefone de quem realizou, além do idResident
-  // Caso o `Resident` nao esteja mais disponivel (null) mostrar uma observacao em amarelo, onde diz que ATUALMENTE não a morador
-
   @override
   Future<bool> create(ComplaintModel value) async {
     var result = await _dbConfiguration.execQuery(

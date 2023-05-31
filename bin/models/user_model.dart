@@ -27,6 +27,14 @@ class UserModel {
       ..status = map['status'];
   }
 
+  factory UserModel.fromMapForBill(Map map) {
+    return UserModel()
+      ..id = int.parse(map['id'])
+      ..name = map['name']
+      ..lastName = map['lastName']
+      ..document = map['document'];
+  }
+
   factory UserModel.fromRequest(Map map) {
     return UserModel()
       ..id = map['id']

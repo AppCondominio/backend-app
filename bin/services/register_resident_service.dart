@@ -1,5 +1,6 @@
 import '../dao/resident_dao.dart';
 import '../models/resident_model.dart';
+import '../models/user_model.dart';
 import 'generic_service.dart';
 
 class RegisterResidentService implements GenericService<ResidentModel> {
@@ -25,6 +26,8 @@ class RegisterResidentService implements GenericService<ResidentModel> {
   }
 
   Future<List<ResidentModel>> findAllByCondo(int idCondo) async => await _residentDAO.findAllByCondo(idCondo);
+
+  Future<UserModel> findUserForBill(int idUser) async => await _residentDAO.findUserForBill(idUser);
 
   Future<List<ResidentModel>> findAllByUser(int idUser) async => await _residentDAO.findAllByUser(idUser);
 
