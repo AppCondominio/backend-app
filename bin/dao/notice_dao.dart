@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import '../infra/database/db_configuration.dart';
 import '../models/notice_model.dart';
 import 'dao.dart';
@@ -55,8 +57,20 @@ class NoticeDAO implements DAO<NoticeModel> {
     return result.rows.map((r) => NoticeModel.fromMap(r.assoc())).toList().cast<NoticeModel>();
   }
 
-  Future<bool> deleteByDate(int id) async {
+  Future<bool> deleteByDate() async {
     var result = await _dbConfiguration.execQuery('DELETE FROM tb_notices WHERE dtToDelete <= :today AND status = :status', {'today': DateTime.now(), 'status': 'A'});
     return result.affectedRows.toInt() > 0;
+  }
+
+  void scheduleDeleteNotice() {
+    const dayDuration = Duration(hours: 24);
+    Timer.periodic(dayDuration, (_) async {
+      try {
+        await deleteByDate();
+        print('[DELETE] -> ${DateTime.now()} - Deleted notice');
+      } catch (e) {
+        print('[ERROR] [DELETE/REMINDER] -> $e');
+      }
+    });
   }
 }

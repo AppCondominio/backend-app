@@ -1,5 +1,7 @@
 // ignore_for_file: no_leading_underscores_for_local_identifiers
 
+import 'dart:async';
+
 import 'package:shelf/shelf.dart';
 import 'package:shelf_cors_headers/shelf_cors_headers.dart';
 
@@ -18,6 +20,9 @@ import 'apis/schedule_api.dart';
 import 'apis/select_apt_api.dart';
 import 'apis/tower_settings_api.dart';
 import 'apis/notice_api.dart';
+import 'dao/notice_dao.dart';
+import 'dao/reminder_dao.dart';
+import 'dao/schedule_dao.dart';
 import 'infra/custom_server.dart';
 import 'package:commons_core/commons_core.dart';
 
@@ -45,15 +50,14 @@ void main() async {
       .add(_di.get<BillApi>().getHandler())
       .handler;
 
-  var handler = Pipeline()
-      .addMiddleware(logRequests())
-      .addMiddleware(MiddlewareInterception().middleware)
-      .addMiddleware(corsHeaders())
-      .addHandler(cascadeHandler);
+  var handler = Pipeline().addMiddleware(logRequests()).addMiddleware(MiddlewareInterception().middleware).addMiddleware(corsHeaders()).addHandler(cascadeHandler);
 
   await CustomServer().initialize(
     handler: handler,
     address: await CustomEnv.get<String>(key: 'server_address'),
     port: await CustomEnv.get<int>(key: 'server_port'),
   );
+
+  _di.get<ReminderDAO>().scheduleDeleteReminder();
+  _di.get<NoticeDAO>().scheduleDeleteNotice();
 }

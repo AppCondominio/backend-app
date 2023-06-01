@@ -49,8 +49,8 @@ class ComplaintDAO implements DAO<ComplaintModel> {
   @override
   Future<bool> update(ComplaintModel value) async {
     var result = await _dbConfiguration.execQuery(
-      'UPDATE tb_complaint SET obs = :obs, status = :status WHERE id = :id',
-      {'obs': value.obs, 'status': value.status, 'id': value.id},
+      'UPDATE tb_complaint SET obs = :obs, status = :status, response = :response, dtUpdated = :dtUpdated WHERE id = :id',
+      {'obs': value.obs, 'status': value.status, 'response': value.response, 'dtUpdated': DateTime.now(), 'id': value.id},
     );
     return result.affectedRows.toInt() > 0;
   }

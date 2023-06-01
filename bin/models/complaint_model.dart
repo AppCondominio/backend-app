@@ -13,6 +13,7 @@ class ComplaintModel {
   String? status;
   int? idCondo;
   int? idResident;
+  String? response;
   String? apt;
   String? optApt;
   String? nameCurrentResident;
@@ -36,6 +37,7 @@ class ComplaintModel {
       ..status = map['status']
       ..idCondo = int.parse(map['idCondo'])
       ..idResident = int.parse(map['idResident'])
+      ..response = map['response']
       ..apt = map['apartament']
       ..optApt = map['optApartament']
       ..nameCurrentResident = map['name']
@@ -58,11 +60,19 @@ class ComplaintModel {
       ..idResident = map['idResident'];
   }
 
+  factory ComplaintModel.fromRequestUpdate(Map map) {
+    return ComplaintModel()
+      ..id = map['id']
+      ..obs = map['obs']
+      ..status = map['status']
+      ..response = map['response'];
+  }
+
   Map toJson() => {
         'id': id,
-        'namePersonCreated':namePersonCreated,
+        'namePersonCreated': namePersonCreated,
         'lastNamePersonCreated': lastNamePersonCreated,
-        'phonePersonCreated':phonePersonCreated,
+        'phonePersonCreated': phonePersonCreated,
         'topic': topic,
         'description': description,
         'attached': attached,
@@ -72,6 +82,7 @@ class ComplaintModel {
         'status': status,
         'idCondo': idCondo,
         'idResident': idResident,
+        'response': response,
         'apt': apt,
         'optApt': optApt,
         'name': nameCurrentResident,
@@ -79,18 +90,10 @@ class ComplaintModel {
         'phone': phoneCurrentResident,
       };
 
-  Map toJsonUser() => {
-        'id': id,
-        'topic': topic,
-        'description': description,
-        'attached': attached,
-        'dtCreated': dtCreated,
-        'dtUpdated': dtUpdated,
-        'status': status,
-      };
+  Map toJsonUser() => {'id': id, 'topic': topic, 'description': description, 'attached': attached, 'dtCreated': dtCreated, 'dtUpdated': dtUpdated, 'status': status, 'response': response};
 
   @override
   String toString() {
-    return 'ComplaintModel(id: $id, namePersonCreated: $namePersonCreated, lastNamePersonCreated: $lastNamePersonCreated, phonePersonCreated: $phonePersonCreated, topic: $topic, description: $description, attached: $attached, obs: $obs, dtCreated: $dtCreated, dtUpdated: $dtUpdated, status: $status, idCondo: $idCondo, idResident: $idResident, apt: $apt, optApt: $optApt, nameCurrentResident: $nameCurrentResident, lastNameCurrentResident: $lastNameCurrentResident, phoneCurrentResident: $phoneCurrentResident)';
+    return 'ComplaintModel(id: $id, namePersonCreated: $namePersonCreated, lastNamePersonCreated: $lastNamePersonCreated, phonePersonCreated: $phonePersonCreated, topic: $topic, description: $description, attached: $attached, obs: $obs, dtCreated: $dtCreated, dtUpdated: $dtUpdated, status: $status, idCondo: $idCondo, idResident: $idResident, response: $response, apt: $apt, optApt: $optApt, nameCurrentResident: $nameCurrentResident, lastNameCurrentResident: $lastNameCurrentResident, phoneCurrentResident: $phoneCurrentResident)';
   }
 }

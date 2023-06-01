@@ -61,7 +61,7 @@ class ComplaintApi extends Api {
     router.put('/complaint', (Request req) async {
       var body = await req.readAsString();
       if (body.isEmpty) return Response(400);
-      var result = await _service.save(ComplaintModel.fromRequest(jsonDecode(body)));
+      var result = await _service.save(ComplaintModel.fromRequestUpdate(jsonDecode(body)));
       return result ? Response(200) : Response(500);
     });
 

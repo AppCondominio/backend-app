@@ -48,15 +48,16 @@ class ReminderDAO implements DAO<ReminderModel> {
   }
 
   Future<void> deleteOldRecord() async {
-    final sixtyDaysAgo = DateTime.now().subtract(Duration(days: 60));
-    await _dbConfiguration.execQuery('DELETE FROM tb_reminder WHERE dtCreated < :date', {'date': sixtyDaysAgo.toIso8601String()});
+    final sixtyDays = DateTime.now().add(Duration(days: 60));
+    await _dbConfiguration.execQuery('DELETE FROM tb_reminder WHERE dtCreated < :date', {'date': sixtyDays.toString()});
   }
 
-  void scheduleDelete() {
+  void scheduleDeleteReminder() {
     const dayDuration = Duration(hours: 24);
     Timer.periodic(dayDuration, (_) async {
       try {
         await deleteOldRecord();
+        print('[DELETE] -> ${DateTime.now()} - Delete old record');
       } catch (e) {
         print('[ERROR] [DELETE/REMINDER] -> $e');
       }
