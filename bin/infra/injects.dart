@@ -62,8 +62,8 @@ class Injects {
 
     // Condiminio
     di.register<CondoDAO>(() => CondoDAO(di<DBConfiguration>()));
-    di.register<GenericService<CondoModel>>(() => RegisterCondoService(di<CondoDAO>()));
-    di.register<RegisterCondoApi>(() => RegisterCondoApi(di<GenericService<CondoModel>>()));
+    di.register<RegisterCondoService>(() => RegisterCondoService(di<CondoDAO>()));
+    di.register<RegisterCondoApi>(() => RegisterCondoApi(di<RegisterCondoService>()));
 
     // Usuario
     di.register<UserDAO>(() => UserDAO(di<DBConfiguration>()));
@@ -71,7 +71,7 @@ class Injects {
     di.register<RegisterUserApi>(() => RegisterUserApi(di<RegisterUserService>()));
 
     // Login
-    di.register<LoginService>(() => LoginService(di<GenericService<CondoModel>>(), di<RegisterUserService>()));
+    di.register<LoginService>(() => LoginService(di<RegisterCondoService>(), di<RegisterUserService>()));
     di.register<LoginApi>(() => LoginApi(di<LoginService>()));
 
     // Residentes

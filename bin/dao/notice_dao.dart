@@ -64,6 +64,7 @@ class NoticeDAO implements DAO<NoticeModel> {
 
   void scheduleDeleteNotice() {
     const dayDuration = Duration(hours: 24);
+    print('${DateTime.now()} [Trying to delete notices]');
     Timer.periodic(dayDuration, (_) async {
       try {
         await deleteByDate();

@@ -36,6 +36,14 @@ class RegisterUserApi extends Api {
       return Response.ok(jsonEncode(user.toJson()));
     });
 
+    router.get('/user/info', (Request req) async {
+      String? uid = req.url.queryParameters['uid'];
+      if (uid == null) return Response(400);
+      var user = await _service.findByUid(uid);
+      if (user == null) return Response(404);
+      return Response.ok(jsonEncode(user.toJson()));
+    });
+
     router.get('/user/document', (Request req) async {
       String? id = req.url.queryParameters['document'];
       if (id == null) return Response(400);

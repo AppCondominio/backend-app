@@ -7,12 +7,11 @@ import 'package:shelf_router/shelf_router.dart';
 import 'package:stripe/stripe.dart';
 
 import '../models/condo_model.dart';
-import '../services/generic_service.dart';
+import '../services/register_condo_service.dart';
 import 'api.dart';
 
 class RegisterCondoApi extends Api {
-  final GenericService<CondoModel> _service;
-
+  final RegisterCondoService _service;
   RegisterCondoApi(this._service);
 
   Future<bool?> getStatusAssinatura(String? idCustomer) async {
@@ -66,6 +65,14 @@ class RegisterCondoApi extends Api {
       String? id = req.url.queryParameters['id'];
       if (id == null) return Response(400);
       var condo = await _service.findOne(int.parse(id));
+      if (condo == null) return Response(404);
+      return Response.ok(jsonEncode(condo.toJson()));
+    });
+
+    router.get('/condo/info', (Request req) async {
+      String? uid = req.url.queryParameters['uid'];
+      if (uid == null) return Response(400);
+      var condo = await _service.findByUid(uid);
       if (condo == null) return Response(404);
       return Response.ok(jsonEncode(condo.toJson()));
     });

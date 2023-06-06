@@ -26,11 +26,11 @@ class RegisterCondoService implements GenericService<CondoModel> {
       value.password = hash;
       return await _condoDAO.update(value);
     } else {
-      final hash = Password.hash(value.password!, PBKDF2());
-      value.password = hash;
       return await _condoDAO.create(value);
     }
   }
+
+  Future<CondoModel?> findByUid(String uid) async => await _condoDAO.findByUid(uid);
 
   Future<CondoModel?> findByDocument(String document) async => await _condoDAO.findByDocument(document);
 }

@@ -16,11 +16,11 @@ class CondoModel {
   String? dtCreated;
   String? dtUpdated;
   String? status;
+  String? uidFirebase;
 
   CondoModel();
 
-  CondoModel.create(this.id, this.name, this.document, this.email, this.zipCode, this.addressNumber, this.optAddress,
-      this.dtCreated, this.dtUpdated, this.status);
+  CondoModel.create(this.id, this.name, this.document, this.email, this.zipCode, this.addressNumber, this.optAddress, this.dtCreated, this.dtUpdated, this.status);
 
   factory CondoModel.fromMap(Map<String, dynamic> map) {
     return CondoModel.create(
@@ -50,11 +50,11 @@ class CondoModel {
       ..id = map['id']
       ..name = map['name']
       ..document = map['document']
-      ..password = map['password']
       ..email = map['email']
       ..zipCode = map['zipCode']
       ..addressNumber = map['addressNumber']
-      ..optAddress = map['optAddress'];
+      ..optAddress = map['optAddress']
+      ..uidFirebase = map['uidFirebase'];
   }
 
   factory CondoModel.fromJson(Map map) {
@@ -104,6 +104,6 @@ class CondoModel {
 
   @override
   String toString() {
-    return 'CondoModel(id: $id, name: $name, document: $document, email: $email, zipCode: $zipCode, addressNumber: $addressNumber, optAddress: $optAddress, dtCreated: $dtCreated, dtUpdated: $dtUpdated, status: $status)';
+    return 'CondoModel(id: $id, name: $name, document: $document, password: $password, email: $email, zipCode: $zipCode, addressNumber: $addressNumber, optAddress: $optAddress, dtCreated: $dtCreated, dtUpdated: $dtUpdated, status: $status, uidFirebase: $uidFirebase)';
   }
 }

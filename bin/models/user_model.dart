@@ -11,6 +11,7 @@ class UserModel {
   String? dtUpdated;
   String? deviceToken;
   String? status;
+  String? uidFirebase;
 
   UserModel();
 
@@ -24,7 +25,8 @@ class UserModel {
       ..phone = map['phone']
       ..dtCreated = map['dtCreated']
       ..dtUpdated = map['dtUpdated']
-      ..status = map['status'];
+      ..status = map['status']
+      ..deviceToken = map['deviceToken'];
   }
 
   factory UserModel.fromMapForBill(Map map) {
@@ -41,9 +43,10 @@ class UserModel {
       ..name = map['name']
       ..lastName = map['lastName']
       ..document = map['document']
-      ..password = map['password']
       ..email = map['email']
-      ..phone = map['phone'];
+      ..phone = map['phone']
+      ..deviceToken = map['deviceToken']
+      ..uidFirebase = map['uidFirebase'];
   }
 
   factory UserModel.fromDocument(Map map) {
@@ -60,6 +63,7 @@ class UserModel {
       'lastName': lastName,
       'email': email,
       'phone': phone,
+      'deviceToken': deviceToken
     };
   }
 

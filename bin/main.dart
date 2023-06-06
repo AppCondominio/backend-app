@@ -22,7 +22,6 @@ import 'apis/tower_settings_api.dart';
 import 'apis/notice_api.dart';
 import 'dao/notice_dao.dart';
 import 'dao/reminder_dao.dart';
-import 'dao/schedule_dao.dart';
 import 'infra/custom_server.dart';
 import 'package:commons_core/commons_core.dart';
 

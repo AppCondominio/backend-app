@@ -21,6 +21,6 @@ class CondoSettingsModel {
     return CondoSettingsModel()
       ..id = map['id']
       ..isConfigurated = map['isConfigurated'] == "1" ? true : false
-      ..idCondo = map['idCondo'];
+      ..idCondo = int.parse(map['idCondo']);
   }
 }

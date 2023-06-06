@@ -10,15 +10,15 @@ class UserDAO implements DAO<UserModel> {
    @override
   Future<bool> create(UserModel value) async {
     var result = await _dbConfiguration.execQuery(
-        'INSERT INTO tb_user (name,lastName,document,password,email,phone,deviceToken) VALUES (:name,:lastName,:document,:password,:email,:phone,:deviceToken)',
+        'INSERT INTO tb_user (name,lastName,document,email,phone,deviceToken,uidFirebase) VALUES (:name,:lastName,:document,:email,:phone,:deviceToken,:uidFirebase)',
         {
           'name': value.name,
           'lastName': value.lastName,
           'document': value.document,
-          'password': value.password,
           'email': value.email,
           'phone': value.phone,
           'deviceToken': value.deviceToken,
+          'uidFirebase': value.uidFirebase,
         });
     return result.affectedRows.toInt() > 0;
   }
@@ -50,12 +50,9 @@ class UserDAO implements DAO<UserModel> {
     return result.affectedRows.toInt() > 0;
   }
 
-  Future<bool> updatePassword(UserModel value) async {
-    var result = await _dbConfiguration.execQuery(
-      'UPDATE tb_user SET password = :password WHERE id = :id',
-      {'password': value.password, 'id': value.id},
-    );
-    return result.affectedRows.toInt() > 0;
+  Future<UserModel?> findByUid(String uid) async {
+    var result = await _dbConfiguration.execQuery('SELECT * FROM tb_user WHERE uidFirebase = :uid', {'uid': uid});
+    return result.rows.isEmpty ? null : UserModel.fromMap(result.rows.first.assoc());
   }
 
   Future<UserModel?> findByDocument(String document) async {

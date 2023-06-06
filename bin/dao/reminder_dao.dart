@@ -54,6 +54,7 @@ class ReminderDAO implements DAO<ReminderModel> {
 
   void scheduleDeleteReminder() {
     const dayDuration = Duration(hours: 24);
+    print('${DateTime.now()} [Trying to delete reminder]');
     Timer.periodic(dayDuration, (_) async {
       try {
         await deleteOldRecord();

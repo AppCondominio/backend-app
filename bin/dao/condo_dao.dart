@@ -9,15 +9,9 @@ class CondoDAO implements DAO<CondoModel> {
   @override
   Future<bool> create(CondoModel value) async {
     var result = await _dbConfiguration.execQuery(
-        'INSERT INTO tb_condo (name,document,password,email,zipCode,addressNumber,optAddress) VALUES (:name,:document,:password,:email,:zipCode,:addressNumber,:optAddress)', {
-      'name': value.name,
-      'document': value.document,
-      'password': value.password,
-      'email': value.email,
-      'zipCode': value.zipCode,
-      'addressNumber': value.addressNumber,
-      'optAddress': value.optAddress
-    });
+      'INSERT INTO tb_condo (name,document,email,zipCode,addressNumber,optAddress,uidFirebase) VALUES (:name,:document,:email,:zipCode,:addressNumber,:optAddress,:uidFirebase)',
+      {'name': value.name, 'document': value.document, 'email': value.email, 'zipCode': value.zipCode, 'addressNumber': value.addressNumber, 'optAddress': value.optAddress, 'uidFirebase': value.uidFirebase},
+    );
     return result.affectedRows.toInt() > 0;
   }
 
@@ -46,6 +40,11 @@ class CondoDAO implements DAO<CondoModel> {
       {'password': value.password, 'email': value.email, 'dtUpdated': DateTime.now(), 'id': value.id},
     );
     return result.affectedRows.toInt() > 0;
+  }
+
+  Future<CondoModel?> findByUid(String uid) async {
+    var result = await _dbConfiguration.execQuery('SELECT * FROM tb_condo WHERE uidFirebase = :uid', {'uid': uid});
+    return result.rows.isEmpty ? null : CondoModel.fromMap(result.rows.first.assoc());
   }
 
   Future<CondoModel?> findByDocument(String document) async {
