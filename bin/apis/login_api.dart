@@ -3,44 +3,32 @@ import 'dart:convert';
 import 'package:shelf/shelf.dart';
 import 'package:shelf_router/shelf_router.dart';
 
-import '../infra/security/security_service.dart';
-import '../models/user_model.dart';
-import '../services/generic_service.dart';
+import '../services/login_service.dart';
+import '../to/auth_to.dart';
 import 'api.dart';
 
 class LoginApi extends Api {
-  final SecurityService _securityService;
-  final GenericService<UserModel> _service;
-  LoginApi(this._securityService, this._service);
+  final LoginService _loginService;
+  LoginApi(this._loginService);
 
   @override
   Handler getHandler({List<Middleware>? middlewares, bool isSecurity = false}) {
     Router router = Router();
     router.post('/login', (Request req) async {
-      var res = await req.readAsString();
-      var body = jsonDecode(res);
-      var document = body['documentNumber'];
-      var password = body['password'];
+      var body = await req.readAsString();
+      var authTO = AuthTO.fromRequest(body);
 
-      List<UserModel> listRegisters = _service.findAll();
-      List<Map> listRegistersMap =
-          listRegisters.map((e) => e.toJson()).toList();
-
-      if (res.isNotEmpty) {
-        var userEncontrado = listRegistersMap.firstWhere(
-            (e) => e['documentNumber'] == document,
-            orElse: () => {});
-        if (document == userEncontrado["documentNumber"] &&
-            password == userEncontrado["password"]) {
-          var tokenVerificated =
-              await _securityService.validateJWT(userEncontrado["jwtToken"]);
-          if (tokenVerificated != null) {
-            return Response.ok("You made login!");
-          }
-        }
+      var result = await _loginService.authenticate(authTO);
+      if (result != null) {
+        return Response.ok(jsonEncode(result.toJsonLogin()));
+      } else {
+        return Response(401, body: 'Invalid document or password.');
       }
-      return Response.forbidden('Not Authorized');
     });
-    return createHandler(router: router);
+    return createHandler(
+      router: router,
+      isSecurity: isSecurity,
+      middlewares: middlewares,
+    );
   }
 }
