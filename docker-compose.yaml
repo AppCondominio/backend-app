@@ -1,20 +1,32 @@
 
 version: '3.4'
 services:
+  backend:
+    image: caiolcaetano/mybackend
+    ports:
+      - '8080:8080'
+    networks:
+      minharede:
+        ipv4_address: 35.231.97.57
   db:
-    image: mysql:8.0.31
+    image: caiolcaetano/mysql:8.0.31
     container_name: mysql
     restart: always
     environment:
-      MYSQL_DATABASE: 'easycondo'   
+      MYSQL_DATABASE: 'condosync'   
       MYSQL_USER: 'dart_user'
       MYSQL_PASSWORD: 'dart_pass'      
       MYSQL_ROOT_PASSWORD: root
     platform: linux/arm64
     ports:
       - '3306:3306'
+    networks:
+      - minharede
     expose:
       - '3306'
     volumes:
       - './volumes/mysql:/var/lib/mysql'
-      - "./database.sql:/docker-entrypoint-initdb.d/1.sql"
+      - "./db.sql:/docker-entrypoint-initdb.d/1.sql"
+networks:
+  minharede:
+    external: true

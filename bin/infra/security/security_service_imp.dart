@@ -1,7 +1,6 @@
 import 'package:commons_core/commons_core.dart';
 import 'package:dart_jsonwebtoken/dart_jsonwebtoken.dart';
 import 'package:shelf/shelf.dart';
-import 'package:shelf/src/middleware.dart';
 
 import 'security_service.dart';
 

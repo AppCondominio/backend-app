@@ -1,5 +1,4 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
-import 'dart:collection';
 import 'dart:convert';
 
 class RecreationModel {
@@ -42,7 +41,7 @@ class RecreationModel {
   }
 
   Map toJson() {
-    Map<String, bool> diasDaSemana = LinkedHashMap<String, bool>();
+    Map<String, bool> diasDaSemana = <String, bool>{};
     for (String dia in ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab']) {
       diasDaSemana[dia] = availability![dia];
     }

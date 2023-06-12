@@ -27,7 +27,7 @@ class NoticeService implements GenericService<NoticeModel> {
   }
 
   Future<List<NoticeModel>> findAllByIdCondo(int idCondo, {String? status}) async {
-    var notices;
+    List<NoticeModel> notices;
     status != null ? notices = await _noticeDAO.findAllByStatus(idCondo, status) : notices = await _noticeDAO.findAllByIdCondo(idCondo);
 
     DateTime? dtToDeleteTD;
